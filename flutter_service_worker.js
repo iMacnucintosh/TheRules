@@ -2,71 +2,70 @@
 const MANIFEST = 'flutter-app-manifest';
 const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
-const RESOURCES = {
-  "flutter.js": "a85fcf6324d3c4d3ae3be1ae4931e9c5",
-"main.dart.js": "09f3c074f051fd3d7dbf30a8b1fb5a28",
-"canvaskit/profiling/canvaskit.js": "c21852696bc1cc82e8894d851c01921a",
-"canvaskit/profiling/canvaskit.wasm": "371bc4e204443b0d5e774d64a046eb99",
-"canvaskit/canvaskit.js": "97937cb4c2c2073c968525a3e08c86a3",
-"canvaskit/canvaskit.wasm": "3de12d898ec208a5f31362cc00f09b9e",
-"favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"version.json": "03fbd2141c0d74860ee35d4369e8ce94",
-"manifest.json": "75979d9ae16f5757c03e5f913636d63a",
-"assets/AssetManifest.json": "b587f6e3a82d920900a8398a94700bcd",
-"assets/assets/images/rules/Relojito.png": "c30107400f13e0cf3335496d7e54c179",
-"assets/assets/images/rules/Valkiria.png": "018bab68b62a937e4a18f826371a2cae",
-"assets/assets/images/rules/Palabra%2520encadenada.png": "1b64aaaf6ee43842b0b50425f8934902",
-"assets/assets/images/rules/Ropajes%2520de%2520color.png": "173a76617d8f2415e98191a2adab63f3",
-"assets/assets/images/rules/Caballo%2520loco.png": "40037643b667f774a016fbe286bd9170",
-"assets/assets/images/rules/Ruleta%2520rusa.png": "ace6deb280baabb9b69fe9d34869fc9c",
-"assets/assets/images/rules/Rey%2520rule.png": "857e539a8174b4c2daffdca9b729253d",
-"assets/assets/images/rules/Portada.png": "6ba8566074c2d7773d5ebf0cca7a4159",
-"assets/assets/images/rules/Beso.png": "c660a8820c60d8b77ecc0d6219137945",
-"assets/assets/images/rules/Isla%2520desierta.png": "414c5da64338e079e1ca1af48881c041",
-"assets/assets/images/rules/Mujeres%2520borrachas.png": "e751bb1baa87a883575ba8ef23dd71d6",
-"assets/assets/images/rules/Mano.png": "d3a53f149d7b57b3ad570f9d7a7260c9",
-"assets/assets/images/rules/El%252010.png": "fd50fcb29fbc7834173a13d4741acc5c",
-"assets/assets/images/rules/Buenos%2520d%25C3%25ADas%2520Manolo.png": "b671201e6ed99c3b63d081d19a06c714",
-"assets/assets/images/rules/Las%2520palmas.png": "3d69f1fd3c9610cd15d973db85464129",
-"assets/assets/images/rules/Palabra%2520prohibida.png": "cb8230765e2bee8e4213e49a2b081e7c",
-"assets/assets/images/rules/Follar,%2520matar%2520o%2520casar.png": "0976ec70339bd07889bde2a48d7dc3f1",
-"assets/assets/images/rules/Verdadero%2520o%2520falso.png": "70a23f43b0aba2d7a89367590950e28a",
-"assets/assets/images/rules/Medusa.png": "b0ccf7d4061f32b67023cf5e58ba550b",
-"assets/assets/images/rules/Chupito.png": "f2d40b3a3bd662f31a622d394f87586c",
-"assets/assets/images/rules/Yo%2520nunca.png": "6b716d543b7a7861a5a200e6ff45c744",
-"assets/assets/images/rules/Adictos%2520a%2520la%2520bebida.png": "59e166f1dd6107c6deebb44bef85b7a2",
-"assets/assets/images/rules/Historia%2520enlazada.png": "630c0ecabd3ebda68003a8bd865b2c13",
-"assets/assets/images/rules/Prueba%2520o%252010%2520tragos.png": "3ceebc272fd10aafed745942dff1920b",
-"assets/assets/images/rules/Piedra%2520papel%2520o%2520tijera.png": "7f6385fe14335d0ceb70ae12b04ee151",
-"assets/assets/images/rules/T%25C3%25ADo%2520maragato.png": "faf0defb1fd07d88233f059577c93221",
-"assets/assets/images/rules/Barquito%2520Peruano%2520.png": "9b3c40bb9d661bbee3a0ea8c7bdcc1e4",
-"assets/assets/images/rules/Virgen%2520del%2520papo.png": "51b588895b98dafde63911196cd713f6",
-"assets/assets/images/rules/Pim%2520Pam%2520Pum.png": "84ef45c7a3a47ed030066a49b300ce9f",
-"assets/assets/images/rules/Vocal.png": "e37a36cda985246e383d82edc75faa09",
-"assets/assets/images/rules/A%2520cantar.png": "656822a87517f18ed8be317751fdb7c0",
-"assets/assets/images/rules/PortadaPortrait.png": "51ea3c0fce3010ff170fd60d90d7c0de",
-"assets/assets/images/rules/Lim%25C3%25B3n.png": "b12e28b6ac5d10b591dc6b2577570b67",
-"assets/assets/images/rules/Hombres%2520borrachos.png": "7511bab0ffaff5ee7eddc0cf20735045",
-"assets/assets/images/rules/Chirla.png": "41a5fff4656b55833e7a0aaa0b34bef4",
-"assets/fonts/MaterialIcons-Regular.otf": "e7069dfd19b331be16bed984668fe080",
-"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "6d342eb68f170c97609e9da345464e5e",
-"assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
-"assets/NOTICES": "2b0871f30011ef722802082c88b5eb02",
-"index.html": "627d0c7bd5dfc19116a5f8c30229f02c",
-"/": "627d0c7bd5dfc19116a5f8c30229f02c",
-"icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
+
+const RESOURCES = {"icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
+"icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c",
 "icons/Icon-192.png": "ac9a721a12bbc803b44f645561ecb1e1",
 "icons/Icon-maskable-512.png": "301a7604d45b3e739efc881eb04896ea",
-"icons/Icon-maskable-192.png": "c457ef57daa1d16f64b27b786ec2ea3c"
-};
-
+"flutter.js": "7d69e653079438abfbb24b82a655b0a4",
+"canvaskit/skwasm.worker.js": "bfb704a6c714a75da9ef320991e88b03",
+"canvaskit/skwasm.js": "87063acf45c5e1ab9565dcf06b0c18b8",
+"canvaskit/chromium/canvaskit.js": "0ae8bbcc58155679458a0f7a00f66873",
+"canvaskit/chromium/canvaskit.wasm": "143af6ff368f9cd21c863bfa4274c406",
+"canvaskit/canvaskit.js": "eb8797020acdbdf96a12fb0405582c1b",
+"canvaskit/canvaskit.wasm": "73584c1a3367e3eaf757647a8f5c5989",
+"canvaskit/skwasm.wasm": "2fc47c0a0c3c7af8542b601634fe9674",
+"version.json": "03fbd2141c0d74860ee35d4369e8ce94",
+"favicon.png": "5dcef449791fa27946b3d35ad8803796",
+"main.dart.js": "2e79c3c0f291ab856a506317efbc765e",
+"assets/NOTICES": "0746d847bc9b38c89aecc23d59c1c318",
+"assets/AssetManifest.bin": "1e71c4433ec8b1d40b3c5b8f3d6c69b0",
+"assets/assets/images/TheRulesWallpaper.png": "51ea3c0fce3010ff170fd60d90d7c0de",
+"assets/assets/images/rules/9.png": "9fb567445da5337b412a1f865c6fc495",
+"assets/assets/images/rules/20.png": "0423522f8517ca3858cd6c7abf25286f",
+"assets/assets/images/rules/8.png": "782ea31347b44d80f39fdfe783c87efa",
+"assets/assets/images/rules/5.png": "341db8e28aec94feaf7235c8bde7c27a",
+"assets/assets/images/rules/15.png": "435b2bdc947ba32aeacbfdeec42e5811",
+"assets/assets/images/rules/16.png": "70dc029f7747a20801b5f8c90005d30e",
+"assets/assets/images/rules/29.png": "b35b64a2e2324374ebab5a8451ca544b",
+"assets/assets/images/rules/24.png": "17006214579af02b5df8e99c3c5e00ac",
+"assets/assets/images/rules/18.png": "eebd9af923835b0ab311bad620fcb7ab",
+"assets/assets/images/rules/13.png": "e8a4741903e9f508f1c28db985cf50af",
+"assets/assets/images/rules/23.png": "90edf37ad3ce1a155dc89d068dc6891c",
+"assets/assets/images/rules/1.png": "19c545f508b1824efd48d05083853079",
+"assets/assets/images/rules/19.png": "6d82563399e71affc93165e36d267dc5",
+"assets/assets/images/rules/21.png": "4adba4a13e05b397a45d4ddaba075ae8",
+"assets/assets/images/rules/17.png": "f258d566282ab1171e39da74b779f38e",
+"assets/assets/images/rules/27.png": "07ad5f7bbcf37b95d4d1220af2e93b09",
+"assets/assets/images/rules/3.png": "29d679162f92cfccc0342ee4a9611af1",
+"assets/assets/images/rules/7.png": "5b435e45af7decfd73f14be18191f21d",
+"assets/assets/images/rules/26.png": "f72bdd35b586bc5f6988af6e174f472f",
+"assets/assets/images/rules/22.png": "c16a3dbd5e5db7605cc6c6ee35971403",
+"assets/assets/images/rules/10.png": "414be6661b606fcb16584b8871701c95",
+"assets/assets/images/rules/28.png": "fcb74e890a5a0776149e4ac31dd0cc52",
+"assets/assets/images/rules/11.png": "31dd979c8f7ba39670b4e2c67b4fe2c8",
+"assets/assets/images/rules/14.png": "df04d9cba423bd7c792a146f89299965",
+"assets/assets/images/rules/25.png": "947b4073337e62465df98fa08987660a",
+"assets/assets/images/rules/4.png": "9e4bf8a416100009ebf3594f576e2b2c",
+"assets/assets/images/rules/12.png": "68c1a5d0884fbb58ddf697400c6a4ad1",
+"assets/assets/images/rules/6.png": "a60d415f09b12950ea02d000ff7f015a",
+"assets/assets/images/rules/2.png": "8c315b67737e35009876b8e25fbdea4a",
+"assets/shaders/ink_sparkle.frag": "4096b5150bac93c41cbc9b45276bd90f",
+"assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "e986ebe42ef785b27164c36a9abc7818",
+"assets/AssetManifest.bin.json": "176201b124d4c06d51e5a8987442fee2",
+"assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
+"assets/fonts/MaterialIcons-Regular.otf": "c86359b3a201665816fb8ca757ae6821",
+"assets/AssetManifest.json": "a59892c01ba2407058c1862d68e8d5a1",
+"index.html": "864d1d2f1c9078b4de13975b76ff22f4",
+"/": "864d1d2f1c9078b4de13975b76ff22f4",
+"manifest.json": "75979d9ae16f5757c03e5f913636d63a"};
 // The application shell files that are downloaded before a service worker can
 // start.
-const CORE = [
-  "main.dart.js",
+const CORE = ["main.dart.js",
 "index.html",
 "assets/AssetManifest.json",
 "assets/FontManifest.json"];
+
 // During install, the TEMP cache is populated with the application shell files.
 self.addEventListener("install", (event) => {
   self.skipWaiting();
@@ -77,7 +76,6 @@ self.addEventListener("install", (event) => {
     })
   );
 });
-
 // During activate, the cache is populated with the temp files downloaded in
 // install. If this service worker is upgrading from one with a saved
 // MANIFEST, then use this to retain unchanged resource files.
@@ -99,6 +97,8 @@ self.addEventListener("activate", function(event) {
         await caches.delete(TEMP);
         // Save the manifest to make future upgrades efficient.
         await manifestCache.put('manifest', new Response(JSON.stringify(RESOURCES)));
+        // Claim client to enable caching on first launch
+        self.clients.claim();
         return;
       }
       var oldManifest = await manifest.json();
@@ -124,6 +124,8 @@ self.addEventListener("activate", function(event) {
       await caches.delete(TEMP);
       // Save the manifest to make future upgrades efficient.
       await manifestCache.put('manifest', new Response(JSON.stringify(RESOURCES)));
+      // Claim client to enable caching on first launch
+      self.clients.claim();
       return;
     } catch (err) {
       // On an unhandled exception the state of the cache cannot be guaranteed.
@@ -134,7 +136,6 @@ self.addEventListener("activate", function(event) {
     }
   }());
 });
-
 // The fetch handler redirects requests for RESOURCE files to the service
 // worker cache.
 self.addEventListener("fetch", (event) => {
@@ -174,7 +175,6 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
-
 self.addEventListener('message', (event) => {
   // SkipWaiting can be used to immediately activate a waiting service worker.
   // This will also require a page refresh triggered by the main worker.
@@ -187,7 +187,6 @@ self.addEventListener('message', (event) => {
     return;
   }
 });
-
 // Download offline will check the RESOURCES for all files not in the cache
 // and populate them.
 async function downloadOffline() {
@@ -208,7 +207,6 @@ async function downloadOffline() {
   }
   return contentCache.addAll(resources);
 }
-
 // Attempt to download the resource online before falling back to
 // the offline cache.
 function onlineFirst(event) {

@@ -14,3 +14,11 @@ jobs:
        with:
          channel: 'stable'
      - run: flutter --version
+     - run: flutter pub get
+
+     - run: flutter build web --release
+
+     - uses: peaceiris/actions-gh-pages@v3
+       with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build/web

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -15,7 +14,7 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="/">
+  <base href="./">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -24,74 +23,32 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="dts_manager">
+  <meta name="apple-mobile-web-app-title" content="therules2">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png" />
-  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>DTS Manager</title>
+  <title>therules2</title>
   <link rel="manifest" href="manifest.json">
-
-  <!-- Libraries -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.min.js"></script>
-  <script type="text/javascript">
-    pdfjsLib.GlobalWorkerOptions.workerSrc = "//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.13.216/pdf.worker.min.js";
-  </script>
 
   <script>
     // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = "4110137837";
+    const serviceWorkerVersion = "1841066307";
   </script>
-
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
-
-  <style>
-    .loader {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      /* Blue */
-      border-radius: 50%;
-      margin-left: -40px;
-      margin-top: -40px;
-      width: 80px;
-      height: 80px;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-  </style>
 </head>
-
 <body>
-  <svg class="loader" width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="M36.6385 5.60901C39.579 6.74346 42.2672 8.44598 44.5497 10.6193C46.8322 12.7927 48.6643 15.3944 49.9414 18.2758C51.2184 21.1572 51.9154 24.2619 51.9926 27.4127C52.0698 30.5635 51.5256 33.6986 50.3911 36.6391C49.2567 39.5796 47.5542 42.2678 45.3808 44.5503C43.2074 46.8328 40.6058 48.6649 37.7244 49.9419C34.843 51.219 31.7382 51.916 28.5875 51.9932C25.4367 52.0703 22.3015 51.5262 19.3611 50.3917C16.4206 49.2573 13.7324 47.5547 11.4499 45.3814C9.16735 43.208 7.33527 40.6063 6.05822 37.7249C4.78117 34.8435 4.08416 31.7388 4.00699 28.588C3.92982 25.4372 4.474 22.3021 5.60845 19.3616C6.7429 16.4212 8.44542 13.7329 10.6188 11.4504C12.7922 9.16792 15.3938 7.33584 18.2752 6.05879C21.1566 4.78174 24.2614 4.08473 27.4121 4.00756C30.5629 3.93038 33.698 4.47456 36.6385 5.60901L36.6385 5.60901Z"
-      stroke="#E0E6EB" stroke-width="8" />
-    <path
-      d="M36.6385 5.60901C40.1721 6.97229 43.3329 9.15251 45.8624 11.9714C48.3919 14.7903 50.2184 18.1679 51.1925 21.8279C52.1666 25.488 52.2606 29.3266 51.4669 33.0299C50.6731 36.7333 49.0142 40.1962 46.6257 43.1356"
-      stroke="#00a19b" stroke-width="8" stroke-linecap="round" />
-  </svg>
   <script>
-    window.addEventListener('load', function (ev) {
+    window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         },
-        onEntrypointLoaded: function (engineInitializer) {
-          engineInitializer.initializeEngine().then(function (appRunner) {
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
             appRunner.runApp();
           });
         }
@@ -99,5 +56,4 @@
     });
   </script>
 </body>
-
 </html>

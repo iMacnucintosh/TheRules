@@ -17,7 +17,7 @@ const RESOURCES = {"icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "canvaskit/skwasm.wasm": "2fc47c0a0c3c7af8542b601634fe9674",
 "version.json": "03fbd2141c0d74860ee35d4369e8ce94",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"main.dart.js": "2e79c3c0f291ab856a506317efbc765e",
+"main.dart.js": "875fb77bb97a9b6586e0fae6e1e83589",
 "assets/NOTICES": "0746d847bc9b38c89aecc23d59c1c318",
 "assets/AssetManifest.bin": "1e71c4433ec8b1d40b3c5b8f3d6c69b0",
 "assets/assets/images/TheRulesWallpaper.png": "51ea3c0fce3010ff170fd60d90d7c0de",
@@ -56,9 +56,9 @@ const RESOURCES = {"icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "assets/FontManifest.json": "dc3d03800ccca4601324923c0b1d6d57",
 "assets/fonts/MaterialIcons-Regular.otf": "c86359b3a201665816fb8ca757ae6821",
 "assets/AssetManifest.json": "a59892c01ba2407058c1862d68e8d5a1",
-"index.html": "7e367472106ba5628aa28f5268da52ce",
-"/": "7e367472106ba5628aa28f5268da52ce",
-"manifest.json": "75979d9ae16f5757c03e5f913636d63a"};
+"index.html": "705fd06c1b8e5ef0b25e9b1880bc18cd",
+"/": "705fd06c1b8e5ef0b25e9b1880bc18cd",
+"manifest.json": "79eaf8fa4c100438c8e024a31de173a6"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",

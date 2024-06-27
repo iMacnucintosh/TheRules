@@ -34,7 +34,8 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
     Rule(
       imagePath: "assets/images/rules/5.png",
       name: "La Chirla",
-      description: "Cada uno dice un número hasta llegar a 10, este en vez de 10 intercambia un número por la palabra que el quiera. El juego termina cuando se cambien todos los números.",
+      description:
+          "Cada uno dice un número hasta llegar a 10, este en vez de 10 intercambia un número por la palabra que el quiera. El juego termina cuando se cambien todos los números.",
       enabled: true,
     ),
     Rule(
@@ -100,7 +101,8 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
     Rule(
       imagePath: "assets/images/rules/16.png",
       name: "Buenos días Manolo",
-      description: 'Mira a quién quieras y dile: "Buenos días Manolo", y te contestará: "Buenos días Manolo", entonces tu dirás: "Buenos días a Manolo, manolo"',
+      description:
+          'Mira a quién quieras y dile: "Buenos días Manolo", y te contestará: "Buenos días Manolo", entonces tu dirás: "Buenos días a Manolo, manolo"',
       enabled: false,
     ),
     Rule(
@@ -111,32 +113,30 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
     ),
     Rule(
       imagePath: "assets/images/rules/18.png",
-      name: "Isla desierta",
-      description: "Yo a una isla desierta me llevaría...",
-      enabled: true,
-    ),
-    Rule(
-      imagePath: "assets/images/rules/18.png",
       name: "Barquito Peruano",
-      description: '"Un barquito peruano viene cargado de... (colores)", y el resto tienen que ir diciendo uno a uno un color, hasta que uno falle o repita.',
+      description:
+          '"Un barquito peruano viene cargado de... (colores)", y el resto tienen que ir diciendo uno a uno un color, hasta que uno falle o repita.',
       enabled: true,
     ),
     Rule(
       imagePath: "assets/images/rules/19.png",
       name: "Prueba o 10 tragos",
-      description: "El primero que levante la mano tiene el poder de mandarte realizar una prueba, a no ser que tu bebas 10 tragos antes de que te diga la regla.",
+      description:
+          "El primero que levante la mano tiene el poder de mandarte realizar una prueba, a no ser que tu bebas 10 tragos antes de que te diga la regla.",
       enabled: true,
     ),
     Rule(
       imagePath: "assets/images/rules/20.png",
       name: "Valkiria",
-      description: "Al jugador que le toque la Valkiria se convierte en Valkiria hasta que alguno de los demás consiga matarlo. El jugador irá guiñando el ojo 2 veces por ronda y esas personas irán muriendo. Si consigue matar 6 jugadores se repartirán 50 tragos entre todos los jugadores a excepción de la Valkiria. Para matar a la Valkiria los jugadores tendrán que adivinar al menos una persona que ha matado la Valkiria, si lo hace repartirá 20 tragos, en caso de fallar beberá 5. Mientras la Valkiria siga viva no podrá haber otra, pero si en tu ronda te toca esta regla podrás adivinar una persona muerta, entonces tu te convertirás en la nueva Valkiria. Las personas que hayan muerto podrán repartir 2 tragos si la Valkiria gana la partida y quedan extentos del reparto de los 50 tragos.",
+      description:
+          "Al jugador que le toque la Valkiria se convierte en Valkiria hasta que alguno de los demás consiga matarlo. El jugador irá guiñando el ojo 2 veces por ronda y esas personas irán muriendo. Si consigue matar 6 jugadores se repartirán 50 tragos entre todos los jugadores a excepción de la Valkiria. Para matar a la Valkiria los jugadores tendrán que adivinar al menos una persona que ha matado la Valkiria, si lo hace repartirá 20 tragos, en caso de fallar beberá 5. Mientras la Valkiria siga viva no podrá haber otra, pero si en tu ronda te toca esta regla podrás adivinar una persona muerta, entonces tu te convertirás en la nueva Valkiria. Las personas que hayan muerto podrán repartir 2 tragos si la Valkiria gana la partida y quedan extentos del reparto de los 50 tragos.",
       enabled: true,
     ),
     Rule(
       imagePath: "assets/images/rules/21.png",
       name: "Medusa",
-      description: 'Los otros jugadores tienen que cerrar los ojos y mirar al suelo durante 3 segundos, después levantarán la cabeza y los abrirán, si coinciden mirándose con otro, tendrán que decir rápidamente "MEDUSA!", el último en decirlo bebe.',
+      description:
+          'Los otros jugadores tienen que cerrar los ojos y mirar al suelo durante 3 segundos, después levantarán la cabeza y los abrirán, si coinciden mirándose con otro, tendrán que decir rápidamente "MEDUSA!", el último en decirlo bebe.',
       enabled: true,
     ),
     Rule(
@@ -160,13 +160,15 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
     Rule(
       imagePath: "assets/images/rules/25.png",
       name: "Historia Enlazada",
-      description: "Empiezas diciendo una frase que comenzará una historia, el siguiente jugador tendrá que darla vida diciendo otra frase. El último jugador, (el de tu izquierda), está obligado a terminar la historia.",
+      description:
+          "Empiezas diciendo una frase que comenzará una historia, el siguiente jugador tendrá que darla vida diciendo otra frase. El último jugador, (el de tu izquierda), está obligado a terminar la historia.",
       enabled: false,
     ),
     Rule(
       imagePath: "assets/images/rules/26.png",
       name: "El 10!",
-      description: "Todos cuentan hasta 10 en voz alta. Si dos o más coinciden en el mismo número beberán tantos tragos como el número en el que coincidan. No puedes decir dos números seguidos o beberás!. Si alguien llega a 10, todos aquellos que no hayan dicho ninguno beberán 10 tragos.",
+      description:
+          "Todos cuentan hasta 10 en voz alta. Si dos o más coinciden en el mismo número beberán tantos tragos como el número en el que coincidan. No puedes decir dos números seguidos o beberás!. Si alguien llega a 10, todos aquellos que no hayan dicho ninguno beberán 10 tragos.",
       enabled: true,
     ),
     Rule(

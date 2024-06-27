@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:therules/src/models/rule.dart';
 import 'package:therules/src/providers/rules_provider.dart';
-import 'package:therules/src/screens/rules.dart';
+import 'package:therules/src/screens/settings.dart';
 
 class Game extends ConsumerStatefulWidget {
   const Game({super.key});
@@ -25,6 +25,11 @@ class GameState extends ConsumerState<Game> {
     return Scaffold(
       appBar: AppBar(
         title: FilledButton(
+          style: ButtonStyle(
+            foregroundColor: MaterialStatePropertyAll(
+              Theme.of(context).colorScheme.primary,
+            ),
+          ),
           child: const Text("INFO PARTIDA"),
           onPressed: () {
             showDialog(
@@ -58,7 +63,7 @@ class GameState extends ConsumerState<Game> {
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => const Rules(),
+                    pageBuilder: (context, animation, secondaryAnimation) => const Settings(),
                     transitionsBuilder: (context, animation, secondaryAnimation, child) {
                       const begin = Offset(0.0, 1.0);
                       const end = Offset.zero;
@@ -89,20 +94,50 @@ class GameState extends ConsumerState<Game> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(16),
-                    ),
+                  child: FilledButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            child: Padding(
+                              padding: const EdgeInsets.all(24.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Image.asset(currentRule.imagePath),
+                                    const SizedBox(height: 20),
+                                    Text(
+                                      currentRule.name,
+                                      style: Theme.of(context).textTheme.headlineSmall,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Text(
+                                      currentRule.description,
+                                      textAlign: TextAlign.justify,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             currentRule.name,
-                            style: TextStyle(fontSize: 30, color: Colors.grey[700]),
+                            style: const TextStyle(
+                              fontSize: 25,
+                            ),
                           ),
+                          const SizedBox(width: 15),
+                          const Icon(Icons.info_outline),
                         ],
                       ),
                     ),
@@ -139,27 +174,22 @@ class GameState extends ConsumerState<Game> {
                         currentRule = ref.read(rulesProvider.notifier).getRandomRule();
                       });
                     },
-                    child: Container(
+                    child: const SizedBox(
                       height: 150,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(16),
-                      ),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: EdgeInsets.all(8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Icon(Icons.casino_outlined, size: 40, color: Colors.grey[700]),
+                            Icon(Icons.casino_outlined, size: 40),
                             Text(
                               "TIRAR",
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey[700],
                               ),
                             ),
-                            Icon(Icons.casino_outlined, size: 40, color: Colors.grey[700]),
+                            Icon(Icons.casino_outlined, size: 40),
                           ],
                         ),
                       ),

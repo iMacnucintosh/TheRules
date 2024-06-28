@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:therules/src/models/rule.dart';
+import 'package:therules/src/providers/current_game_provider.dart';
 import 'package:therules/src/providers/rules_provider.dart';
 import 'package:therules/src/screens/settings.dart';
 
@@ -35,15 +36,86 @@ class GameState extends ConsumerState<Game> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return const Dialog(
+                return Dialog(
                   child: Padding(
-                    padding: EdgeInsets.all(24.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[Text("hola")],
-                      ),
-                    ),
+                    padding: const EdgeInsets.all(24.0),
+                    child: StatefulBuilder(builder: (context, setState) {
+                      final gameRulesProvider = ref.watch(gamesRulesProvider);
+                      return SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Reglas activas",
+                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(Icons.close),
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              itemCount: gameRulesProvider.length,
+                              itemBuilder: (context, index) => Card(
+                                child: ListTile(
+                                  title: Text(
+                                    gameRulesProvider[index],
+                                    style: Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                  trailing: IconButton(
+                                    tooltip: "Eliminar regla",
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () {
+                                      ref.read(gamesRulesProvider.notifier).removeGameRule(gameRulesProvider[index]);
+                                      setState(() {});
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              "Palabras prohibidas",
+                              style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            const Divider(),
+                            // ListView.builder(
+                            //   padding: EdgeInsets.zero,
+                            //   shrinkWrap: true,
+                            //   itemCount: gameRulesProvider.length,
+                            //   itemBuilder: (context, index) => Card(
+                            //     child: ListTile(
+                            //       title: Text(
+                            //         gameRulesProvider[index],
+                            //         style: Theme.of(context).textTheme.titleSmall,
+                            //       ),
+                            //       trailing: IconButton(
+                            //         tooltip: "Eliminar regla",
+                            //         icon: const Icon(
+                            //           Icons.delete,
+                            //           color: Colors.red,
+                            //         ),
+                            //         onPressed: () {},
+                            //       ),
+                            //     ),
+                            //   ),
+                            // ),
+                          ],
+                        ),
+                      );
+                    }),
                   ),
                 );
               },
@@ -153,9 +225,7 @@ class GameState extends ConsumerState<Game> {
                   ),
                   child: FilledButton(
                     onPressed: () {
-                      setState(() {
-                        currentRule = ref.read(rulesProvider.notifier).getRandomRule();
-                      });
+                      nextRule();
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -170,9 +240,7 @@ class GameState extends ConsumerState<Game> {
                   padding: const EdgeInsets.symmetric(horizontal: 30),
                   child: FilledButton(
                     onPressed: () {
-                      setState(() {
-                        currentRule = ref.read(rulesProvider.notifier).getRandomRule();
-                      });
+                      nextRule();
                     },
                     child: const SizedBox(
                       height: 150,
@@ -202,5 +270,12 @@ class GameState extends ConsumerState<Game> {
         },
       ),
     );
+  }
+
+  void nextRule() async {
+    if (currentRule.onFinish != null) await currentRule.onFinish!(context);
+    setState(() {
+      currentRule = ref.read(rulesProvider.notifier).getRandomRule();
+    });
   }
 }

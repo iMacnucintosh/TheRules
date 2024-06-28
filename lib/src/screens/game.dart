@@ -21,7 +21,7 @@ class GameState extends ConsumerState<Game> {
   void initState() {
     super.initState();
     currentRule = ref.read(rulesProvider.notifier).getRandomRule();
-    _gameRules = List.from(ref.read(gamesRulesProvider));
+    _gameRules = ref.read(gamesRulesProvider);
   }
 
   @override
@@ -36,6 +36,7 @@ class GameState extends ConsumerState<Game> {
           ),
           child: const Text("INFO PARTIDA"),
           onPressed: () {
+            _gameRules = ref.read(gamesRulesProvider);
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -246,7 +247,6 @@ class GameState extends ConsumerState<Game> {
 
   Widget _buildListItem(BuildContext context, String rule, Animation<double> animation) {
     return SizeTransition(
-      
       sizeFactor: animation,
       child: Card(
         child: ListTile(

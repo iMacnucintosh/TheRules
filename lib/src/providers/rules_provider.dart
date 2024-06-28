@@ -19,8 +19,13 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
           name: "Rule!",
           description: "Rule of Rules: Pones una regla para toda la partida y bebe quién la incumpla. Las reglas tienen poder de eliminar otras.",
           enabled: true,
-          onFinish: (context) {
-            showDialog(
+          onFinish: (context) async {
+            void addNewGameRule(String newRule) {
+              if (newRule.isNotEmpty) ref.read(rulesProvider.notifier).addGameRule(newRule);
+              Navigator.of(context).pop();
+            }
+
+            await showDialog(
               context: context,
               builder: (BuildContext context) {
                 TextEditingController ruleController = TextEditingController();
@@ -42,6 +47,9 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
                               labelText: "La regla es...",
                             ),
                             controller: ruleController,
+                            onFieldSubmitted: (value) {
+                              addNewGameRule(value);
+                            },
                           ),
                           const SizedBox(height: 20),
                           Row(
@@ -49,9 +57,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
                             children: [
                               TextButton(
                                   onPressed: () {
-                                    final rulesNotifier = ref.read(rulesProvider.notifier);
-                                    rulesNotifier.addGameRule(ruleController.text);
-                                    Navigator.of(context).pop(); // Close the dialog after adding the rule
+                                    addNewGameRule(ruleController.text);
                                   },
                                   child: const Text("Aceptar")),
                             ],

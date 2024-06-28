@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class GamesRulesNotifier extends StateNotifier<List<String>> {
   GamesRulesNotifier() : super(_gameRules);
 
-  static final List<String> _gameRules = ["Hablar con la o", "Cuando Manuel levante la mano el ultimo que la suba bebe"];
+  static final List<String> _gameRules = [];
 
   void addGameRule(String rule) {
     final gameRules = List<String>.from(state);

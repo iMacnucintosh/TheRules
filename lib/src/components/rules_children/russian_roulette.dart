@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 
 class RussianRoulette extends StatefulWidget {
@@ -26,20 +24,10 @@ class _RussianRouletteState extends State<RussianRoulette> {
               if (shoot == 0) {
                 killed = true;
                 setState(() {});
-                AssetsAudioPlayer.newPlayer().open(
-                  Audio("assets/audio/shot.wav"),
-                  autoStart: true,
-                  showNotification: true,
-                );
+
                 await Future.delayed(const Duration(seconds: 1));
                 killed = false;
                 setState(() {});
-              } else {
-                AssetsAudioPlayer.newPlayer().open(
-                  Audio("assets/audio/shotPop.wav"),
-                  autoStart: true,
-                  showNotification: true,
-                );
               }
             },
             icon: Image.asset(

@@ -177,124 +177,130 @@ class GameState extends ConsumerState<Game> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            double width = constraints.maxWidth;
-            double height = constraints.maxHeight;
-            double size = width < height ? width : height;
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: FilledButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                              child: Padding(
-                                padding: const EdgeInsets.all(24.0),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Image.asset(currentRule.imagePath),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        currentRule.name,
-                                        style: Theme.of(context).textTheme.headlineSmall,
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Text(
-                                        currentRule.description,
-                                        textAlign: TextAlign.justify,
-                                      ),
-                                    ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double width = constraints.maxWidth;
+          double height = constraints.maxHeight;
+          double size = width < height ? width : height;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: FilledButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          child: Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Image.asset(currentRule.imagePath),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    currentRule.name,
+                                    style: Theme.of(context).textTheme.headlineSmall,
                                   ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              currentRule.name,
-                              style: const TextStyle(
-                                fontSize: 25,
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    currentRule.description,
+                                    textAlign: TextAlign.justify,
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(width: 15),
-                            const Icon(Icons.info_outline),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(
-                      minWidth: size - 60,
-                      minHeight: size - 60,
-                      maxWidth: size - 60,
-                      maxHeight: size - 60,
-                    ),
-                    child: FilledButton(
-                      onPressed: () {
-                        nextRule();
+                          ),
+                        );
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Image.asset(
-                          currentRule.imagePath,
+                    );
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          currentRule.name,
+                          style: const TextStyle(
+                            fontSize: 25,
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 15),
+                        const Icon(Icons.info_outline),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: FilledButton(
-                      onPressed: () {
-                        nextRule();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: currentRule.child != null
-                            ? Row(
-                                children: [
-                                  Expanded(child: currentRule.child!),
-                                ],
-                              )
-                            : const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Icon(Icons.casino_outlined, size: 40),
-                                  Text(
-                                    "TIRAR",
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Icon(Icons.casino_outlined, size: 40),
-                                ],
-                              ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            );
-          },
-        ),
+              const SizedBox(height: 30),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  minWidth: size - 60,
+                  minHeight: size - 60,
+                  maxWidth: size - 60,
+                  maxHeight: size - 60,
+                ),
+                child: FilledButton(
+                  onPressed: () {
+                    nextRule();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset(
+                      currentRule.imagePath,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: FilledButton(
+                        onPressed: () {
+                          nextRule();
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: currentRule.child != null
+                              ? Row(
+                                  children: [
+                                    Expanded(child: currentRule.child!),
+                                  ],
+                                )
+                              : const Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Icon(Icons.casino_outlined, size: 40),
+                                    Text(
+                                      "TIRAR",
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Icon(Icons.casino_outlined, size: 40),
+                                  ],
+                                ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 60,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

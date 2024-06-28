@@ -21,6 +21,7 @@ class _DrinkAddictedState extends State<DrinkAddicted> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text("Beben los adictos a: "),
         Text(

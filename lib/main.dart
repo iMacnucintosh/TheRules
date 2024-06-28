@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:therules/src/providers/theme_provider.dart';
 import 'package:therules/src/screens/home.dart';
 
 void main() {
@@ -11,34 +12,28 @@ void main() {
   );
 }
 
-class TheRules extends StatelessWidget {
+class TheRules extends ConsumerWidget {
   const TheRules({super.key});
 
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
+    final isDarkMode = ref.watch(isDarkModeProvider);
+    final accentColor = ref.watch(accentColorProvider);
+
     return MaterialApp(
       title: 'TheRules',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: accentColor,
+        ),
         useMaterial3: true,
-        textTheme: GoogleFonts.sourceSans3TextTheme(),
+        textTheme: GoogleFonts.robotoTextTheme(
+          ThemeData.dark().textTheme.apply(
+                bodyColor: Colors.grey[700],
+              ),
+        ),
         filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.grey[200]),
@@ -51,9 +46,44 @@ class TheRules extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
             ),
+            side: MaterialStatePropertyAll(
+              BorderSide(
+                width: 1.5,
+                color: accentColor,
+              ),
+            ),
           ),
         ),
       ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          brightness: Brightness.dark,
+          seedColor: accentColor,
+        ),
+        useMaterial3: true,
+        textTheme: GoogleFonts.robotoTextTheme(ThemeData.dark().textTheme),
+        filledButtonTheme: FilledButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStatePropertyAll(Colors.grey[800]),
+            foregroundColor: MaterialStatePropertyAll(Colors.grey[200]),
+            textStyle: const MaterialStatePropertyAll(
+              TextStyle(fontSize: 16),
+            ),
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            side: MaterialStatePropertyAll(
+              BorderSide(
+                width: 1.5,
+                color: accentColor,
+              ),
+            ),
+          ),
+        ),
+      ),
+      themeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
       home: const Home(),
     );
   }

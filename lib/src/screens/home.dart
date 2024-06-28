@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:therules/src/providers/players_provider.dart';
 import 'package:therules/src/screens/game.dart';
-import 'package:therules/src/screens/rules.dart';
+import 'package:therules/src/screens/settings.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Home extends ConsumerWidget {
@@ -54,7 +54,7 @@ class Home extends ConsumerWidget {
                             color: Colors.grey[800],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(28, 16, 28, 16),
+                            padding: const EdgeInsets.fromLTRB(30, 16, 30, 16),
                             child: Text(
                               ref.watch(playersProvider).toString(),
                               style: const TextStyle(fontSize: 30, color: Colors.white),
@@ -88,7 +88,7 @@ class Home extends ConsumerWidget {
                 Navigator.push(
                   context,
                   PageRouteBuilder(
-                    pageBuilder: (context, animation, secondaryAnimation) => const Rules(),
+                    pageBuilder: (context, animation, secondaryAnimation) => const Settings(),
                     transitionsBuilder: (context, animation, secondaryAnimation, child) {
                       const begin = Offset(0.0, 1.0);
                       const end = Offset.zero;

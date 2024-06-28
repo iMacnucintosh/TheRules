@@ -23,7 +23,10 @@ class _DrinkAddictedState extends State<DrinkAddicted> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Beben los adictos a: "),
+        Text(
+          "Beben los adictos a: ",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
         Text(
           drink,
           style: const TextStyle(

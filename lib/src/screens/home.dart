@@ -38,35 +38,53 @@ class Home extends ConsumerWidget {
                   padding: const EdgeInsets.only(bottom: 200),
                   child: SizedBox(
                     width: 280,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    child: Column(
                       children: [
-                        IconButton.filled(
-                          onPressed: () => ref.read(playersProvider.notifier).removePlayer(),
-                          icon: const Icon(
-                            Icons.remove_outlined,
-                            size: 35,
-                          ),
-                        ),
                         Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(50),
                             color: Colors.grey[800],
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 16, 30, 16),
+                          child: const Padding(
+                            padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
                             child: Text(
-                              ref.watch(playersProvider).toString(),
-                              style: const TextStyle(fontSize: 30, color: Colors.white),
+                              "Seleccione número de jugadores",
+                              style: TextStyle(fontSize: 16, color: Colors.white),
                             ),
                           ),
                         ),
-                        IconButton.filled(
-                          onPressed: () => ref.read(playersProvider.notifier).addPlayer(),
-                          icon: const Icon(
-                            Icons.add_outlined,
-                            size: 35,
-                          ),
+                        const SizedBox(height: 15),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            IconButton.filled(
+                              onPressed: () => ref.read(playersProvider.notifier).removePlayer(),
+                              icon: const Icon(
+                                Icons.remove_outlined,
+                                size: 35,
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.grey[800],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(30, 16, 30, 16),
+                                child: Text(
+                                  ref.watch(playersProvider).toString(),
+                                  style: const TextStyle(fontSize: 30, color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            IconButton.filled(
+                              onPressed: () => ref.read(playersProvider.notifier).addPlayer(),
+                              icon: const Icon(
+                                Icons.add_outlined,
+                                size: 35,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

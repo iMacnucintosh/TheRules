@@ -29,11 +29,7 @@ class TheRules extends ConsumerWidget {
           seedColor: accentColor,
         ),
         useMaterial3: true,
-        textTheme: GoogleFonts.robotoTextTheme(
-          ThemeData.dark().textTheme.apply(
-                bodyColor: Colors.grey[700],
-              ),
-        ),
+        textTheme: GoogleFonts.robotoTextTheme(),
         filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.grey[200]),

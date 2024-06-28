@@ -14,14 +14,15 @@ class Game extends ConsumerStatefulWidget {
 
 class GameState extends ConsumerState<Game> {
   late Rule currentRule;
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   late List<String> _gameRules;
+  late List<String> _gameWords;
 
   @override
   void initState() {
     super.initState();
     currentRule = ref.read(rulesProvider.notifier).getRandomRule();
     _gameRules = ref.read(gamesRulesProvider);
+    _gameWords = ref.read(gamesWordsProvider);
   }
 
   @override
@@ -36,7 +37,6 @@ class GameState extends ConsumerState<Game> {
           ),
           child: const Text("INFO PARTIDA"),
           onPressed: () {
-            _gameRules = ref.read(gamesRulesProvider);
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -44,6 +44,8 @@ class GameState extends ConsumerState<Game> {
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: StatefulBuilder(builder: (context, setState) {
+                      _gameRules = ref.read(gamesRulesProvider);
+                      _gameWords = ref.read(gamesWordsProvider);
                       return SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,20 +66,74 @@ class GameState extends ConsumerState<Game> {
                               ],
                             ),
                             const Divider(),
-                            AnimatedList(
-                              key: _listKey,
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              initialItemCount: _gameRules.length,
-                              itemBuilder: (context, index, animation) => _buildListItem(context, _gameRules[index], animation),
-                            ),
+                            _gameRules.isNotEmpty
+                                ? ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    itemCount: _gameRules.length,
+                                    itemBuilder: (context, index) => Card(
+                                      child: ListTile(
+                                        title: Text(
+                                          _gameRules[index],
+                                          style: Theme.of(context).textTheme.titleSmall,
+                                        ),
+                                        trailing: IconButton(
+                                          tooltip: "Eliminar regla",
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            ref.read(gamesRulesProvider.notifier).remove(_gameRules[index]);
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : ListTile(
+                                    title: Text(
+                                      "Todavía no se ha añadido ninguna regla",
+                                      style: Theme.of(context).textTheme.titleSmall,
+                                    ),
+                                  ),
                             const SizedBox(height: 20),
                             Text(
                               "Palabras prohibidas",
                               style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const Divider(),
-                            // Otra lista animada para "Palabras prohibidas" si es necesario
+                            _gameWords.isNotEmpty
+                                ? ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    shrinkWrap: true,
+                                    itemCount: _gameWords.length,
+                                    itemBuilder: (context, index) => Card(
+                                      child: ListTile(
+                                        title: Text(
+                                          _gameWords[index],
+                                          style: Theme.of(context).textTheme.titleSmall,
+                                        ),
+                                        trailing: IconButton(
+                                          tooltip: "Eliminar palabra",
+                                          icon: const Icon(
+                                            Icons.delete,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            ref.read(gamesWordsProvider.notifier).remove(_gameWords[index]);
+                                            setState(() {});
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : ListTile(
+                                    title: Text(
+                                      "Todavía no se ha prohibido ninguna palabra",
+                                      style: Theme.of(context).textTheme.titleSmall,
+                                    ),
+                                  ),
                           ],
                         ),
                       );
@@ -243,41 +299,5 @@ class GameState extends ConsumerState<Game> {
     setState(() {
       currentRule = ref.read(rulesProvider.notifier).getRandomRule();
     });
-  }
-
-  Widget _buildListItem(BuildContext context, String rule, Animation<double> animation) {
-    return SizeTransition(
-      sizeFactor: animation,
-      child: Card(
-        child: ListTile(
-          title: Text(
-            rule,
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          trailing: IconButton(
-            tooltip: "Eliminar regla",
-            icon: const Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-            onPressed: () {
-              _removeItem(rule);
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _removeItem(String rule) {
-    final int index = _gameRules.indexOf(rule);
-    if (index >= 0) {
-      _gameRules.removeAt(index);
-      _listKey.currentState!.removeItem(
-        index,
-        (context, animation) => _buildListItem(context, rule, animation),
-      );
-      ref.read(gamesRulesProvider.notifier).removeGameRule(rule);
-    }
   }
 }

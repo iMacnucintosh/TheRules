@@ -21,7 +21,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
           enabled: true,
           onFinish: (context) async {
             void addNewGameRule(String newRule) {
-              if (newRule.isNotEmpty) ref.read(rulesProvider.notifier).addGameRule(newRule);
+              if (newRule.isNotEmpty) ref.read(gamesRulesProvider.notifier).add(newRule);
               Navigator.of(context).pop();
             }
 
@@ -38,13 +38,13 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            "¿Que regla se ha decidido?",
+                            "¿Qué regla se ha decidido?",
                             style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                           ),
                           TextFormField(
                             decoration: const InputDecoration(
                               border: UnderlineInputBorder(),
-                              labelText: "La regla es...",
+                              labelText: "La regla es ...",
                             ),
                             controller: ruleController,
                             onFieldSubmitted: (value) {
@@ -111,7 +111,58 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         imagePath: "assets/images/rules/8.png",
         name: "Palabra prohibida",
         description: "Prohíbe una palabra para que beba cualquiera que la diga durante toda la partida.",
-        enabled: false,
+        enabled: true,
+        onFinish: (context) async {
+          void addNewWordRule(String word) {
+            if (word.isNotEmpty) ref.read(gamesWordsProvider.notifier).add(word);
+            Navigator.of(context).pop();
+          }
+
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              TextEditingController wordController = TextEditingController();
+              return Dialog(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "¿Qué palabra se ha prohibido?",
+                          style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        TextFormField(
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(),
+                            labelText: "No se puede decir ...",
+                          ),
+                          controller: wordController,
+                          onFieldSubmitted: (value) {
+                            addNewWordRule(value);
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  addNewWordRule(wordController.text);
+                                },
+                                child: const Text("Aceptar")),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
       Rule(
         imagePath: "assets/images/rules/9.png",
@@ -253,10 +304,6 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
     final updatedRules = List<Rule>.from(state);
     updatedRules[index].enabled = !updatedRules[index].enabled;
     state = updatedRules;
-  }
-
-  void addGameRule(String ruleDescription) {
-    ref.read(gamesRulesProvider.notifier).addGameRule(ruleDescription);
   }
 
   List<Rule> getEnabledRules() {

@@ -10,9 +10,10 @@ class RussianRoulette extends StatefulWidget {
 
 class _RussianRouletteState extends State<RussianRoulette> {
   bool killed = false;
+
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -24,10 +25,10 @@ class _RussianRouletteState extends State<RussianRoulette> {
               if (shoot == 0) {
                 killed = true;
                 setState(() {});
-
                 await Future.delayed(const Duration(seconds: 1));
                 killed = false;
-                setState(() {});
+
+                if (mounted) setState(() {});
               }
             },
             icon: Image.asset(

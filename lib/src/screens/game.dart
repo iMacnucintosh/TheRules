@@ -257,25 +257,29 @@ class GameState extends ConsumerState<Game> {
                 ),
               ),
               const SizedBox(height: 30),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: FilledButton(
-                        onPressed: () {
-                          nextRule();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: currentRule.child != null
-                              ? Row(
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: FilledButton(
+                      onPressed: () {
+                        nextRule();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: currentRule.child != null
+                            ? SizedBox(
+                                height: 150,
+                                child: Row(
                                   children: [
                                     Expanded(child: currentRule.child!),
                                   ],
-                                )
-                              : const Row(
+                                ),
+                              )
+                            : const SizedBox(
+                                height: 150,
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                   children: [
                                     Icon(Icons.casino_outlined, size: 40),
@@ -289,14 +293,14 @@ class GameState extends ConsumerState<Game> {
                                     Icon(Icons.casino_outlined, size: 40),
                                   ],
                                 ),
-                        ),
+                              ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 60,
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(
+                    height: 60,
+                  ),
+                ],
               ),
             ],
           );

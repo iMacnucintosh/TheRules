@@ -33,16 +33,20 @@ class _ColorClothsState extends State<ColorCloths> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Beben los que lleven algo de:"),
-        const SizedBox(height: 10),
+        Text(
+          "Beben los que lleven algo de:",
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: 15),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: color["color"]!,
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(26.0),
             child: Text(
               color["name"]!,
               style: TextStyle(

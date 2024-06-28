@@ -14,11 +14,14 @@ class Game extends ConsumerStatefulWidget {
 
 class GameState extends ConsumerState<Game> {
   late Rule currentRule;
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+  late List<String> _gameRules;
 
   @override
   void initState() {
-    currentRule = ref.read(rulesProvider.notifier).getRandomRule();
     super.initState();
+    currentRule = ref.read(rulesProvider.notifier).getRandomRule();
+    _gameRules = List.from(ref.read(gamesRulesProvider));
   }
 
   @override
@@ -40,7 +43,6 @@ class GameState extends ConsumerState<Game> {
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: StatefulBuilder(builder: (context, setState) {
-                      final gameRulesProvider = ref.watch(gamesRulesProvider);
                       return SingleChildScrollView(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,29 +63,12 @@ class GameState extends ConsumerState<Game> {
                               ],
                             ),
                             const Divider(),
-                            ListView.builder(
+                            AnimatedList(
+                              key: _listKey,
                               padding: EdgeInsets.zero,
                               shrinkWrap: true,
-                              itemCount: gameRulesProvider.length,
-                              itemBuilder: (context, index) => Card(
-                                child: ListTile(
-                                  title: Text(
-                                    gameRulesProvider[index],
-                                    style: Theme.of(context).textTheme.titleSmall,
-                                  ),
-                                  trailing: IconButton(
-                                    tooltip: "Eliminar regla",
-                                    icon: const Icon(
-                                      Icons.delete,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      ref.read(gamesRulesProvider.notifier).removeGameRule(gameRulesProvider[index]);
-                                      setState(() {});
-                                    },
-                                  ),
-                                ),
-                              ),
+                              initialItemCount: _gameRules.length,
+                              itemBuilder: (context, index, animation) => _buildListItem(context, _gameRules[index], animation),
                             ),
                             const SizedBox(height: 20),
                             Text(
@@ -91,27 +76,7 @@ class GameState extends ConsumerState<Game> {
                               style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
                             ),
                             const Divider(),
-                            // ListView.builder(
-                            //   padding: EdgeInsets.zero,
-                            //   shrinkWrap: true,
-                            //   itemCount: gameRulesProvider.length,
-                            //   itemBuilder: (context, index) => Card(
-                            //     child: ListTile(
-                            //       title: Text(
-                            //         gameRulesProvider[index],
-                            //         style: Theme.of(context).textTheme.titleSmall,
-                            //       ),
-                            //       trailing: IconButton(
-                            //         tooltip: "Eliminar regla",
-                            //         icon: const Icon(
-                            //           Icons.delete,
-                            //           color: Colors.red,
-                            //         ),
-                            //         onPressed: () {},
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
+                            // Otra lista animada para "Palabras prohibidas" si es necesario
                           ],
                         ),
                       );
@@ -277,5 +242,42 @@ class GameState extends ConsumerState<Game> {
     setState(() {
       currentRule = ref.read(rulesProvider.notifier).getRandomRule();
     });
+  }
+
+  Widget _buildListItem(BuildContext context, String rule, Animation<double> animation) {
+    return SizeTransition(
+      
+      sizeFactor: animation,
+      child: Card(
+        child: ListTile(
+          title: Text(
+            rule,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          trailing: IconButton(
+            tooltip: "Eliminar regla",
+            icon: const Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              _removeItem(rule);
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _removeItem(String rule) {
+    final int index = _gameRules.indexOf(rule);
+    if (index >= 0) {
+      _gameRules.removeAt(index);
+      _listKey.currentState!.removeItem(
+        index,
+        (context, animation) => _buildListItem(context, rule, animation),
+      );
+      ref.read(gamesRulesProvider.notifier).removeGameRule(rule);
+    }
   }
 }

@@ -48,8 +48,8 @@ class TheRules extends ConsumerWidget {
             ),
             side: MaterialStatePropertyAll(
               BorderSide(
-                width: 2,
-                color: Theme.of(context).colorScheme.primary,
+                width: 1.5,
+                color: accentColor,
               ),
             ),
           ),
@@ -72,6 +72,12 @@ class TheRules extends ConsumerWidget {
             shape: MaterialStatePropertyAll(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+            side: MaterialStatePropertyAll(
+              BorderSide(
+                width: 1.5,
+                color: accentColor,
               ),
             ),
           ),

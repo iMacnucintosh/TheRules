@@ -118,7 +118,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         imagePath: "assets/images/rules/7.png",
         name: "¿Verdadero o Falso?",
         description: "Cuentas una historia y los demás tienen que adivinar si es verdad o mentira, beben los que fallen.",
-        enabled: sharedPreferences.getBool("true_or_false") ?? true,
+        enabled: sharedPreferences.getBool("true_or_false") ?? false,
       ),
       Rule(
         id: "forbidden_word",
@@ -211,7 +211,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         imagePath: "assets/images/rules/13.png",
         name: "Relojito",
         description: "Bebes un trago y los demás +1 por cada jugador anterior",
-        enabled: sharedPreferences.getBool("clock") ?? true,
+        enabled: sharedPreferences.getBool("clock") ?? false,
       ),
       Rule(
         id: "russian_roulette",
@@ -226,7 +226,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         imagePath: "assets/images/rules/15.png",
         name: "Chupito gratis",
         description: "Bebeté un chupito por lo bien que te lo estas pasando",
-        enabled: sharedPreferences.getBool("free_shot") ?? true,
+        enabled: sharedPreferences.getBool("free_shot") ?? false,
       ),
       Rule(
         id: "gm_manolo",
@@ -234,7 +234,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         name: "Buenos días Manolo",
         description:
             'Mira a quién quieras y dile: "Buenos días Manolo", y te contestará: "Buenos días Manolo", entonces tu dirás: "Buenos días a Manolo, manolo"',
-        enabled: sharedPreferences.getBool("gm_manolo") ?? true,
+        enabled: sharedPreferences.getBool("gm_manolo") ?? false,
       ),
       Rule(
         id: "rock_paper_scissors",
@@ -249,7 +249,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         name: "Barquito Peruano",
         description:
             '"Un barquito peruano viene cargado de... (colores)", y el resto tienen que ir diciendo uno a uno un color, hasta que uno falle o repita.',
-        enabled: sharedPreferences.getBool("peruvian_boat") ?? true,
+        enabled: sharedPreferences.getBool("peruvian_boat") ?? false,
       ),
       Rule(
         id: "try_or_10_drinks",
@@ -257,7 +257,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         name: "Prueba o 10 tragos",
         description:
             "El primero que levante la mano tiene el poder de mandarte realizar una prueba, a no ser que tu bebas 10 tragos antes de que te diga la regla.",
-        enabled: sharedPreferences.getBool("try_or_10_drinks") ?? true,
+        enabled: sharedPreferences.getBool("try_or_10_drinks") ?? false,
       ),
       Rule(
         id: "valkyrie",
@@ -265,7 +265,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         name: "Valkiria",
         description:
             "Al jugador que le toque la Valkiria se convierte en Valkiria hasta que alguno de los demás consiga matarlo. El jugador irá guiñando el ojo 2 veces por ronda y esas personas irán muriendo. Si consigue matar 6 jugadores se repartirán 50 tragos entre todos los jugadores a excepción de la Valkiria. Para matar a la Valkiria los jugadores tendrán que adivinar al menos una persona que ha matado la Valkiria, si lo hace repartirá 20 tragos, en caso de fallar beberá 5. Mientras la Valkiria siga viva no podrá haber otra, pero si en tu ronda te toca esta regla podrás adivinar una persona muerta, entonces tu te convertirás en la nueva Valkiria. Las personas que hayan muerto podrán repartir 2 tragos si la Valkiria gana la partida y quedan extentos del reparto de los 50 tragos.",
-        enabled: sharedPreferences.getBool("valkyrie") ?? true,
+        enabled: sharedPreferences.getBool("valkyrie") ?? false,
       ),
       Rule(
         id: "medusa",
@@ -273,7 +273,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         name: "Medusa",
         description:
             'Los otros jugadores tienen que cerrar los ojos y mirar al suelo durante 3 segundos, después levantarán la cabeza y los abrirán, si coinciden mirándose con otro, tendrán que decir rápidamente "MEDUSA!", el último en decirlo bebe.',
-        enabled: sharedPreferences.getBool("medusa") ?? true,
+        enabled: sharedPreferences.getBool("medusa") ?? false,
       ),
       Rule(
         id: "f_k_m",
@@ -303,7 +303,7 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         name: "Historia Enlazada",
         description:
             "Empiezas diciendo una frase que comenzará una historia, el siguiente jugador tendrá que darla vida diciendo otra frase. El último jugador, (el de tu izquierda), está obligado a terminar la historia.",
-        enabled: sharedPreferences.getBool("linked_story") ?? true,
+        enabled: sharedPreferences.getBool("linked_story") ?? false,
       ),
       Rule(
         id: "ten",
@@ -326,14 +326,14 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         imagePath: "assets/images/rules/28.png",
         name: "El caballo loco",
         description: "El próximo jugador no tira, pero puede hacerlo mandándote beber a costa de beber él mismo el doble de tragos.",
-        enabled: sharedPreferences.getBool("crazy_horse") ?? true,
+        enabled: sharedPreferences.getBool("crazy_horse") ?? false,
       ),
       Rule(
         id: "chained_syllable",
         imagePath: "assets/images/rules/29.png",
         name: "Sílaba Encadenada",
         description: "Dices una palabra y el siguiente otra que empiece como terminaba la tuya.",
-        enabled: sharedPreferences.getBool("chained_syllable") ?? true,
+        enabled: sharedPreferences.getBool("chained_syllable") ?? false,
       ),
     ];
   }

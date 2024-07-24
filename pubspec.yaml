@@ -38,6 +38,7 @@ dependencies:
   flutter_riverpod: ^2.5.1
   flex_color_picker: ^3.4.1
   shared_preferences: ^2.2.3
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:

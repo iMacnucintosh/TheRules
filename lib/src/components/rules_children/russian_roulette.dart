@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:therules/src/providers/players_provider.dart';
@@ -15,6 +16,13 @@ class RussianRouletteState extends ConsumerState<RussianRoulette> {
   late int players;
   int currentPlayer = 0;
   bool finish = false;
+  late AudioPlayer _audioPlayer;
+
+  void _playShot(bool bullet) async {
+    String audioPath = bullet ? "/audio/shot.wav" : "/audio/shotPop.wav";
+    _audioPlayer = AudioPlayer();
+    await _audioPlayer.play(AssetSource(audioPath));
+  }
 
   @override
   void didChangeDependencies() {
@@ -37,12 +45,13 @@ class RussianRouletteState extends ConsumerState<RussianRoulette> {
                             if (shoot <= 0) {
                               killed = true;
                               setState(() {});
-
+                              _playShot(true);
                               await Future.delayed(const Duration(seconds: 1));
                               killed = false;
 
                               if (mounted) setState(() {});
                             } else {
+                              _playShot(false);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text("Jugador $currentPlayer libras"),
@@ -50,6 +59,7 @@ class RussianRouletteState extends ConsumerState<RussianRoulette> {
                                 ),
                               );
                             }
+
                             if (currentPlayer >= players) {
                               finish = true;
                               setState(() {});

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:interactive_slider/interactive_slider.dart';
 import 'package:therules/src/providers/players_provider.dart';
 import 'package:therules/src/screens/game.dart';
 import 'package:therules/src/screens/settings.dart';
@@ -37,7 +38,7 @@ class Home extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 200),
                   child: SizedBox(
-                    width: 280,
+                    width: 380,
                     child: Column(
                       children: [
                         Container(
@@ -54,38 +55,42 @@ class Home extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 15),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            IconButton.filled(
-                              onPressed: () => ref.read(playersProvider.notifier).removePlayer(),
-                              icon: const Icon(
-                                Icons.remove_outlined,
-                                size: 35,
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                color: Colors.grey[800],
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(30, 16, 30, 16),
-                                child: Text(
-                                  ref.watch(playersProvider).toString(),
-                                  style: const TextStyle(fontSize: 30, color: Colors.white),
-                                ),
-                              ),
-                            ),
-                            IconButton.filled(
-                              onPressed: () => ref.read(playersProvider.notifier).addPlayer(),
-                              icon: const Icon(
-                                Icons.add_outlined,
-                                size: 35,
-                              ),
-                            ),
-                          ],
-                        ),
+                        InteractiveSlider(
+                          startIcon: Icon(
+                            Icons.person,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 35,
+                            shadows: const [
+                              Shadow(
+                                color: Colors.black,
+                                blurRadius: 4,
+                              )
+                            ],
+                          ),
+                          centerIcon: Text(
+                            ref.watch(playersProvider).toString(),
+                            style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                          endIcon: Icon(
+                            Icons.group,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 35,
+                            shadows: const [
+                              Shadow(
+                                color: Colors.black,
+                                blurRadius: 4,
+                              )
+                            ],
+                          ),
+                          min: 1,
+                          max: 20,
+                          unfocusedHeight: 60,
+                          focusedHeight: 63,
+                          unfocusedOpacity: 1,
+                          backgroundColor: Colors.grey[800],
+                          foregroundColor: Theme.of(context).colorScheme.primaryContainer,
+                          onChanged: (value) => ref.read(playersProvider.notifier).setPlayers(value),
+                        )
                       ],
                     ),
                   ),

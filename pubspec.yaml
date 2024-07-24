@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_riverpod: ^2.5.1
   flex_color_picker: ^3.4.1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +84,7 @@ flutter:
   assets:
     - assets/images/TheRulesWallpaper.png
     - assets/images/icon.png
+    - assets/images/shoot.png
     - assets/images/rules/1.png
     - assets/images/rules/2.png
     - assets/images/rules/3.png
@@ -112,6 +114,9 @@ flutter:
     - assets/images/rules/27.png
     - assets/images/rules/28.png
     - assets/images/rules/29.png
+
+    - assets/audio/shot.wav
+    - assets/audio/shotPop.wav
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

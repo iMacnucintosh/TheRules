@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:therules/src/providers/shared_preferences_provider.dart';
 import 'package:therules/src/providers/theme_provider.dart';
 import 'package:therules/src/screens/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final sharedPreferences = await SharedPreferences.getInstance();
   runApp(
-    const ProviderScope(
-      child: TheRules(),
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ],
+      child: const TheRules(),
     ),
   );
 }
@@ -29,11 +36,7 @@ class TheRules extends ConsumerWidget {
           seedColor: accentColor,
         ),
         useMaterial3: true,
-        textTheme: GoogleFonts.robotoTextTheme(
-          ThemeData.dark().textTheme.apply(
-                bodyColor: Colors.grey[700],
-              ),
-        ),
+        textTheme: GoogleFonts.robotoTextTheme(),
         filledButtonTheme: FilledButtonThemeData(
           style: ButtonStyle(
             backgroundColor: MaterialStatePropertyAll(Colors.grey[200]),

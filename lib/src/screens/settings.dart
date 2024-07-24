@@ -2,6 +2,7 @@ import 'package:flex_color_picker/flex_color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:therules/src/providers/rules_provider.dart';
+import 'package:therules/src/providers/shared_preferences_provider.dart';
 import 'package:therules/src/providers/theme_provider.dart';
 
 class Settings extends ConsumerWidget {
@@ -12,12 +13,15 @@ class Settings extends ConsumerWidget {
     late Color dialogPickerColor;
 
     dialogPickerColor = ref.watch(accentColorProvider);
+    final sharedPreferences = ref.watch(sharedPreferencesProvider);
 
     Future<bool> colorPickerDialog() async {
       return ColorPicker(
         color: dialogPickerColor,
         onColorChanged: (Color color) {
           dialogPickerColor = color;
+
+          sharedPreferences.setString("accent_color", color.value.toRadixString(16));
           ref.read(accentColorProvider.notifier).update((state) => color);
         },
         width: 40,
@@ -159,7 +163,8 @@ class Settings extends ConsumerWidget {
                       Switch(
                         value: ref.watch(isDarkModeProvider),
                         onChanged: (value) {
-                          ref.read(isDarkModeProvider.notifier).update((state) => !state);
+                          sharedPreferences.setBool("is_dark_mode", value);
+                          ref.read(isDarkModeProvider.notifier).update((state) => value);
                         },
                       ),
                     ],

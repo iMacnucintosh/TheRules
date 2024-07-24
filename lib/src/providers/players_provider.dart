@@ -10,6 +10,10 @@ class PlayersNotifier extends StateNotifier<int> {
   void removePlayer() {
     if (state > 1) state = state - 1;
   }
+
+  void setPlayers(double players) {
+    state = players.toInt();
+  }
 }
 
 final playersProvider = StateNotifierProvider<PlayersNotifier, int>((ref) {

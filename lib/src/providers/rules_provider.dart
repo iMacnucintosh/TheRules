@@ -335,6 +335,13 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         description: "Dices una palabra y el siguiente otra que empiece como terminaba la tuya.",
         enabled: sharedPreferences.getBool("chained_syllable") ?? false,
       ),
+      Rule(
+        id: "half_a_proverb",
+        imagePath: "assets/images/rules/30.png",
+        name: "Medio refrán",
+        description: "Dices medio refrán y el siguiente tiene que decir el resto del refrán. Si no lo sabe continua al siguiente, hasta que uno acierte. Los que no acierten beberán.",
+        enabled: sharedPreferences.getBool("half_a_proverb") ?? true,
+      ),
     ];
   }
 

@@ -14,12 +14,7 @@ class Home extends ConsumerWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Image.asset(
-              "assets/images/TheRulesWallpaper.png",
-              fit: BoxFit.cover,
-            ),
-          ),
+          Positioned.fill(child: Image.asset("assets/images/TheRulesWallpaper.png", fit: BoxFit.cover)),
           Positioned(
             top: 50,
             left: 0,
@@ -42,45 +37,29 @@ class Home extends ConsumerWidget {
                     child: Column(
                       children: [
                         Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            color: Colors.grey[800],
-                          ),
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: Colors.grey[800]),
                           child: const Padding(
                             padding: EdgeInsets.fromLTRB(16, 8, 16, 8),
-                            child: Text(
-                              "Seleccione número de jugadores",
-                              style: TextStyle(fontSize: 16, color: Colors.white),
-                            ),
+                            child: Text("Seleccione número de jugadores", style: TextStyle(fontSize: 16, color: Colors.white)),
                           ),
                         ),
                         const SizedBox(height: 15),
                         InteractiveSlider(
                           startIcon: Icon(
                             Icons.person,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Colors.white,
                             size: 35,
-                            shadows: const [
-                              Shadow(
-                                color: Colors.black,
-                                blurRadius: 4,
-                              )
-                            ],
+                            shadows: const [Shadow(color: Colors.black, blurRadius: 4)],
                           ),
                           centerIcon: Text(
                             ref.watch(playersProvider).toString(),
-                            style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.bold),
+                            style: Theme.of(context).textTheme.headlineMedium!.copyWith(fontWeight: FontWeight.bold, color: Colors.white),
                           ),
                           endIcon: Icon(
                             Icons.group,
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Colors.white,
                             size: 35,
-                            shadows: const [
-                              Shadow(
-                                color: Colors.black,
-                                blurRadius: 4,
-                              )
-                            ],
+                            shadows: const [Shadow(color: Colors.black, blurRadius: 4)],
                           ),
                           min: 1,
                           max: 20,
@@ -90,7 +69,7 @@ class Home extends ConsumerWidget {
                           backgroundColor: Colors.grey[800],
                           foregroundColor: Theme.of(context).colorScheme.primaryContainer,
                           onChanged: (value) => ref.read(playersProvider.notifier).setPlayers(value),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -119,10 +98,7 @@ class Home extends ConsumerWidget {
 
                       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
+                      return SlideTransition(position: animation.drive(tween), child: child);
                     },
                   ),
                 );
@@ -144,10 +120,7 @@ class Home extends ConsumerWidget {
 
                       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
+                      return SlideTransition(position: animation.drive(tween), child: child);
                     },
                   ),
                 );

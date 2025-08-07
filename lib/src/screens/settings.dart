@@ -21,7 +21,7 @@ class Settings extends ConsumerWidget {
         onColorChanged: (Color color) {
           dialogPickerColor = color;
 
-          sharedPreferences.setString("accent_color", color.value.toRadixString(16));
+          sharedPreferences.setString("accent_color", color.toARGB32().toRadixString(16));
           ref.read(accentColorProvider.notifier).update((state) => color);
         },
         width: 40,
@@ -30,34 +30,16 @@ class Settings extends ConsumerWidget {
         spacing: 5,
         runSpacing: 5,
         wheelDiameter: 155,
-        pickerTypeLabels: const {
-          ColorPickerType.primary: "Primarios",
-          ColorPickerType.accent: "Acento",
-          ColorPickerType.wheel: "Selector",
-        },
+        pickerTypeLabels: const {ColorPickerType.primary: "Primarios", ColorPickerType.accent: "Acento", ColorPickerType.wheel: "Selector"},
         pickerTypeTextStyle: Theme.of(context).textTheme.labelLarge,
-        actionButtons: const ColorPickerActionButtons(
-          dialogOkButtonLabel: "Aceptar",
-          dialogCancelButtonLabel: "Cancelar",
-        ),
-        heading: Text(
-          'Selecciona un Color',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        subheading: Text(
-          'Puedes seleccionar una variante',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        wheelSubheading: Text(
-          'Selecciona un color y su variante',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        actionButtons: const ColorPickerActionButtons(dialogOkButtonLabel: "Aceptar", dialogCancelButtonLabel: "Cancelar"),
+        heading: Text('Selecciona un Color', style: Theme.of(context).textTheme.titleMedium),
+        subheading: Text('Puedes seleccionar una variante', style: Theme.of(context).textTheme.titleMedium),
+        wheelSubheading: Text('Selecciona un color y su variante', style: Theme.of(context).textTheme.titleMedium),
         showMaterialName: true,
         showColorName: true,
         showColorCode: true,
-        copyPasteBehavior: const ColorPickerCopyPasteBehavior(
-          longPressMenu: true,
-        ),
+        copyPasteBehavior: const ColorPickerCopyPasteBehavior(longPressMenu: true),
         materialNameTextStyle: Theme.of(context).textTheme.bodySmall,
         colorNameTextStyle: Theme.of(context).textTheme.bodySmall,
         colorCodeTextStyle: Theme.of(context).textTheme.bodyMedium,
@@ -89,9 +71,7 @@ class Settings extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: IconButton(
-              icon: const Icon(
-                Icons.close,
-              ),
+              icon: const Icon(Icons.close),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -122,15 +102,9 @@ class Settings extends ConsumerWidget {
                                   children: <Widget>[
                                     Image.asset(rules[index].imagePath),
                                     const SizedBox(height: 20),
-                                    Text(
-                                      rules[index].name,
-                                      style: Theme.of(context).textTheme.headlineSmall,
-                                    ),
+                                    Text(rules[index].name, style: Theme.of(context).textTheme.headlineSmall),
                                     const SizedBox(height: 20),
-                                    Text(
-                                      rules[index].description,
-                                      textAlign: TextAlign.justify,
-                                    ),
+                                    Text(rules[index].description, textAlign: TextAlign.justify),
                                   ],
                                 ),
                               ),
@@ -156,10 +130,7 @@ class Settings extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Modo Oscuro",
-                        style: TextStyle(fontSize: 16),
-                      ),
+                      const Text("Modo Oscuro", style: TextStyle(fontSize: 16)),
                       Switch(
                         value: ref.watch(isDarkModeProvider),
                         onChanged: (value) {

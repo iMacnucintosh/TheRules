@@ -1,5 +1,5 @@
 name: therules
-description: "A new Flutter project."
+description: "Drink and Fun!"
 publish_to: "none"
 
 version: 1.0.0+1
@@ -10,13 +10,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: 6.2.1
+  google_fonts: 6.3.0
 
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^2.6.1
   flex_color_picker: ^3.7.1
   shared_preferences: ^2.5.3
-  audioplayers: ^6.4.0
+  audioplayers: ^6.5.0
   interactive_slider: ^0.5.1
 
 dev_dependencies:

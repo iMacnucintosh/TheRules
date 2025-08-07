@@ -35,11 +35,7 @@ class GameState extends ConsumerState<Game> {
     return Scaffold(
       appBar: AppBar(
         title: FilledButton(
-          style: ButtonStyle(
-            foregroundColor: MaterialStatePropertyAll(
-              Theme.of(context).colorScheme.primary,
-            ),
-          ),
+          style: ButtonStyle(foregroundColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.primary)),
           child: const Text("INFO PARTIDA"),
           onPressed: () {
             showDialog(
@@ -48,101 +44,77 @@ class GameState extends ConsumerState<Game> {
                 return Dialog(
                   child: Padding(
                     padding: const EdgeInsets.all(24.0),
-                    child: StatefulBuilder(builder: (context, setState) {
-                      _gameRules = ref.read(gamesRulesProvider);
-                      _gameWords = ref.read(gamesWordsProvider);
-                      return SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Reglas activas",
-                                  style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: const Icon(Icons.close),
-                                ),
-                              ],
-                            ),
-                            const Divider(),
-                            _gameRules.isNotEmpty
-                                ? ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    itemCount: _gameRules.length,
-                                    itemBuilder: (context, index) => Card(
-                                      child: ListTile(
-                                        title: Text(
-                                          _gameRules[index],
-                                          style: Theme.of(context).textTheme.titleSmall,
-                                        ),
-                                        trailing: IconButton(
-                                          tooltip: "Eliminar regla",
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
+                    child: StatefulBuilder(
+                      builder: (context, setState) {
+                        _gameRules = ref.read(gamesRulesProvider);
+                        _gameWords = ref.read(gamesWordsProvider);
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text("Reglas activas", style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                                  IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(Icons.close),
+                                  ),
+                                ],
+                              ),
+                              const Divider(),
+                              _gameRules.isNotEmpty
+                                  ? ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      itemCount: _gameRules.length,
+                                      itemBuilder: (context, index) => Card(
+                                        child: ListTile(
+                                          title: Text(_gameRules[index], style: Theme.of(context).textTheme.titleSmall),
+                                          trailing: IconButton(
+                                            tooltip: "Eliminar regla",
+                                            icon: const Icon(Icons.delete, color: Colors.red),
+                                            onPressed: () {
+                                              ref.read(gamesRulesProvider.notifier).remove(_gameRules[index]);
+                                              setState(() {});
+                                            },
                                           ),
-                                          onPressed: () {
-                                            ref.read(gamesRulesProvider.notifier).remove(_gameRules[index]);
-                                            setState(() {});
-                                          },
                                         ),
                                       ),
-                                    ),
-                                  )
-                                : ListTile(
-                                    title: Text(
-                                      "Todavía no se ha añadido ninguna regla",
-                                      style: Theme.of(context).textTheme.titleSmall,
-                                    ),
-                                  ),
-                            const SizedBox(height: 20),
-                            Text(
-                              "Palabras prohibidas",
-                              style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                            const Divider(),
-                            _gameWords.isNotEmpty
-                                ? ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    shrinkWrap: true,
-                                    itemCount: _gameWords.length,
-                                    itemBuilder: (context, index) => Card(
-                                      child: ListTile(
-                                        title: Text(
-                                          _gameWords[index],
-                                          style: Theme.of(context).textTheme.titleSmall,
-                                        ),
-                                        trailing: IconButton(
-                                          tooltip: "Eliminar palabra",
-                                          icon: const Icon(
-                                            Icons.delete,
-                                            color: Colors.red,
+                                    )
+                                  : ListTile(title: Text("Todavía no se ha añadido ninguna regla", style: Theme.of(context).textTheme.titleSmall)),
+                              const SizedBox(height: 20),
+                              Text("Palabras prohibidas", style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                              const Divider(),
+                              _gameWords.isNotEmpty
+                                  ? ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      shrinkWrap: true,
+                                      itemCount: _gameWords.length,
+                                      itemBuilder: (context, index) => Card(
+                                        child: ListTile(
+                                          title: Text(_gameWords[index], style: Theme.of(context).textTheme.titleSmall),
+                                          trailing: IconButton(
+                                            tooltip: "Eliminar palabra",
+                                            icon: const Icon(Icons.delete, color: Colors.red),
+                                            onPressed: () {
+                                              ref.read(gamesWordsProvider.notifier).remove(_gameWords[index]);
+                                              setState(() {});
+                                            },
                                           ),
-                                          onPressed: () {
-                                            ref.read(gamesWordsProvider.notifier).remove(_gameWords[index]);
-                                            setState(() {});
-                                          },
                                         ),
                                       ),
+                                    )
+                                  : ListTile(
+                                      title: Text("Todavía no se ha prohibido ninguna palabra", style: Theme.of(context).textTheme.titleSmall),
                                     ),
-                                  )
-                                : ListTile(
-                                    title: Text(
-                                      "Todavía no se ha prohibido ninguna palabra",
-                                      style: Theme.of(context).textTheme.titleSmall,
-                                    ),
-                                  ),
-                          ],
-                        ),
-                      );
-                    }),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 );
               },
@@ -155,9 +127,7 @@ class GameState extends ConsumerState<Game> {
             padding: const EdgeInsets.only(right: 12.0),
             child: IconButton(
               tooltip: "Seleccionar reglas",
-              icon: const Icon(
-                Icons.checklist,
-              ),
+              icon: const Icon(Icons.checklist),
               onPressed: () async {
                 await Navigator.push(
                   context,
@@ -170,10 +140,7 @@ class GameState extends ConsumerState<Game> {
 
                       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
 
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
+                      return SlideTransition(position: animation.drive(tween), child: child);
                     },
                   ),
                 );
@@ -211,15 +178,9 @@ class GameState extends ConsumerState<Game> {
                                             children: <Widget>[
                                               Image.asset(currentRule!.imagePath),
                                               const SizedBox(height: 20),
-                                              Text(
-                                                currentRule!.name,
-                                                style: Theme.of(context).textTheme.headlineSmall,
-                                              ),
+                                              Text(currentRule!.name, style: Theme.of(context).textTheme.headlineSmall),
                                               const SizedBox(height: 20),
-                                              Text(
-                                                currentRule!.description,
-                                                textAlign: TextAlign.justify,
-                                              ),
+                                              Text(currentRule!.description, textAlign: TextAlign.justify),
                                             ],
                                           ),
                                         ),
@@ -233,12 +194,7 @@ class GameState extends ConsumerState<Game> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      currentRule!.name,
-                                      style: const TextStyle(
-                                        fontSize: 25,
-                                      ),
-                                    ),
+                                    Text(currentRule!.name, style: const TextStyle(fontSize: 25)),
                                     const SizedBox(width: 15),
                                     const Icon(Icons.info_outline),
                                   ],
@@ -248,22 +204,12 @@ class GameState extends ConsumerState<Game> {
                           ),
                           const SizedBox(height: 30),
                           ConstrainedBox(
-                            constraints: BoxConstraints(
-                              minWidth: size - 60,
-                              minHeight: size - 60,
-                              maxWidth: size - 60,
-                              maxHeight: size - 60,
-                            ),
+                            constraints: BoxConstraints(minWidth: size - 60, minHeight: size - 60, maxWidth: size - 60, maxHeight: size - 60),
                             child: FilledButton(
                               onPressed: () {
                                 nextRule();
                               },
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Image.asset(
-                                  currentRule!.imagePath,
-                                ),
-                              ),
+                              child: Padding(padding: const EdgeInsets.all(10.0), child: Image.asset(currentRule!.imagePath)),
                             ),
                           ),
                           const SizedBox(height: 30),
@@ -277,19 +223,12 @@ class GameState extends ConsumerState<Game> {
                                         height: 150,
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(16),
-                                          border: Border.all(
-                                            color: ref.watch(accentColorProvider),
-                                            width: 1.5,
-                                          ),
+                                          border: Border.all(color: ref.watch(accentColorProvider), width: 1.5),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(16.0),
                                           child: Center(
-                                            child: Row(
-                                              children: [
-                                                Expanded(child: currentRule!.child!),
-                                              ],
-                                            ),
+                                            child: Row(children: [Expanded(child: currentRule!.child!)]),
                                           ),
                                         ),
                                       )
@@ -303,22 +242,14 @@ class GameState extends ConsumerState<Game> {
                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                             children: [
                                               Icon(Icons.casino_outlined, size: 40),
-                                              Text(
-                                                "TIRAR",
-                                                style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
+                                              Text("TIRAR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
                                               Icon(Icons.casino_outlined, size: 40),
                                             ],
                                           ),
                                         ),
                                       ),
                               ),
-                              const SizedBox(
-                                height: 60,
-                              ),
+                              const SizedBox(height: 60),
                             ],
                           ),
                         ],
@@ -331,11 +262,7 @@ class GameState extends ConsumerState<Game> {
           : Center(
               child: Padding(
                 padding: const EdgeInsets.all(32.0),
-                child: Text(
-                  "No seais maricones y activad más reglas",
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textAlign: TextAlign.center,
-                ),
+                child: Text("No seais maricones y activad más reglas", style: Theme.of(context).textTheme.titleLarge, textAlign: TextAlign.center),
               ),
             ),
     );

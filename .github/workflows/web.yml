@@ -5,11 +5,17 @@ on:
     branches:
       - deploy-github-pages
 
+# Permisos explícitos para evitar problemas de Git
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.32.8"

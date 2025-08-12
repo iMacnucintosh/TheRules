@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:therules/src/models/rule.dart';
 import 'package:therules/src/providers/current_game_provider.dart';
+import 'package:therules/src/providers/custom_rules_provider.dart';
 import 'package:therules/src/providers/rules_provider.dart';
 import 'package:therules/src/providers/theme_provider.dart';
 import 'package:therules/src/screens/settings.dart';
@@ -17,6 +19,7 @@ class GameState extends ConsumerState<Game> {
   late Rule? currentRule;
   late List<String> _gameRules;
   late List<String> _gameWords;
+  String? _currentRuleImageBase64;
 
   bool enaughtRules = true;
 
@@ -26,6 +29,42 @@ class GameState extends ConsumerState<Game> {
     currentRule = ref.read(rulesProvider.notifier).getRandomRule();
     _gameRules = ref.read(gamesRulesProvider);
     _gameWords = ref.read(gamesWordsProvider);
+    _updateCurrentRuleImage();
+  }
+
+  void _updateCurrentRuleImage() {
+    if (currentRule != null) {
+      // Verificar si es una regla personalizada
+      final customRules = ref.read(customRulesProvider);
+      final customRule = customRules.where((rule) => rule.id == currentRule!.id).firstOrNull;
+
+      if (customRule != null) {
+        _currentRuleImageBase64 = customRule.imageBase64;
+      } else {
+        _currentRuleImageBase64 = null;
+      }
+    }
+  }
+
+  Widget _buildRuleImage() {
+    if (_currentRuleImageBase64 != null) {
+      // Regla personalizada
+      return Container(
+        width: 200,
+        height: 150,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.memory(base64Decode(_currentRuleImageBase64!), fit: BoxFit.cover),
+        ),
+      );
+    } else {
+      // Regla predefinida
+      return Image.asset(currentRule!.imagePath);
+    }
   }
 
   @override
@@ -176,7 +215,7 @@ class GameState extends ConsumerState<Game> {
                                           child: Column(
                                             mainAxisSize: MainAxisSize.min,
                                             children: <Widget>[
-                                              Image.asset(currentRule!.imagePath),
+                                              _buildRuleImage(),
                                               const SizedBox(height: 20),
                                               Text(currentRule!.name, style: Theme.of(context).textTheme.headlineSmall),
                                               const SizedBox(height: 20),
@@ -209,7 +248,7 @@ class GameState extends ConsumerState<Game> {
                               onPressed: () {
                                 nextRule();
                               },
-                              child: Padding(padding: const EdgeInsets.all(10.0), child: Image.asset(currentRule!.imagePath)),
+                              child: Padding(padding: const EdgeInsets.all(10.0), child: _buildRuleImage()),
                             ),
                           ),
                           const SizedBox(height: 30),
@@ -272,6 +311,7 @@ class GameState extends ConsumerState<Game> {
     if (currentRule != null) if (currentRule!.onFinish != null) await currentRule!.onFinish!(context);
     setState(() {
       currentRule = ref.read(rulesProvider.notifier).getRandomRule();
+      _updateCurrentRuleImage();
     });
   }
 }

@@ -7,6 +7,7 @@ import 'package:therules/src/components/rules_children/drink_addicted.dart';
 import 'package:therules/src/components/rules_children/russian_roulette.dart';
 import 'package:therules/src/models/rule.dart';
 import 'package:therules/src/providers/current_game_provider.dart';
+import 'package:therules/src/providers/custom_rules_provider.dart';
 import 'package:therules/src/providers/shared_preferences_provider.dart';
 
 class RulesNotifier extends StateNotifier<List<Rule>> {
@@ -21,62 +22,58 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
     final sharedPreferences = ref.watch(sharedPreferencesProvider);
     state = [
       Rule(
-          id: "rule",
-          imagePath: "assets/images/rules/1.png",
-          name: "Rule!",
-          description: "Rule of Rules: Pones una regla para toda la partida y bebe quién la incumpla. Las reglas tienen poder de eliminar otras.",
-          enabled: sharedPreferences.getBool("rule") ?? true,
-          onFinish: (context) async {
-            void addNewGameRule(String newRule) {
-              if (newRule.isNotEmpty) ref.read(gamesRulesProvider.notifier).add(newRule);
-              Navigator.of(context).pop();
-            }
+        id: "rule",
+        imagePath: "assets/images/rules/1.png",
+        name: "Rule!",
+        description: "Rule of Rules: Pones una regla para toda la partida y bebe quién la incumpla. Las reglas tienen poder de eliminar otras.",
+        enabled: sharedPreferences.getBool("rule") ?? true,
+        onFinish: (context) async {
+          void addNewGameRule(String newRule) {
+            if (newRule.isNotEmpty) ref.read(gamesRulesProvider.notifier).add(newRule);
+            Navigator.of(context).pop();
+          }
 
-            await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                TextEditingController ruleController = TextEditingController();
-                return Dialog(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "¿Qué regla se ha decidido?",
-                            style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-                          ),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              border: UnderlineInputBorder(),
-                              labelText: "La regla es ...",
+          await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              TextEditingController ruleController = TextEditingController();
+              return Dialog(
+                child: Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("¿Qué regla se ha decidido?", style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                        TextFormField(
+                          decoration: const InputDecoration(border: UnderlineInputBorder(), labelText: "La regla es ..."),
+                          controller: ruleController,
+                          onFieldSubmitted: (value) {
+                            addNewGameRule(value);
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                addNewGameRule(ruleController.text);
+                              },
+                              child: const Text("Aceptar"),
                             ),
-                            controller: ruleController,
-                            onFieldSubmitted: (value) {
-                              addNewGameRule(value);
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              TextButton(
-                                  onPressed: () {
-                                    addNewGameRule(ruleController.text);
-                                  },
-                                  child: const Text("Aceptar")),
-                            ],
-                          )
-                        ],
-                      ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            );
-          }),
+                ),
+              );
+            },
+          );
+        },
+      ),
       Rule(
         id: "papo",
         imagePath: "assets/images/rules/2.png",
@@ -144,15 +141,9 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          "¿Qué palabra se ha prohibido?",
-                          style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold),
-                        ),
+                        Text("¿Qué palabra se ha prohibido?", style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
                         TextFormField(
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            labelText: "No se puede decir ...",
-                          ),
+                          decoration: const InputDecoration(border: UnderlineInputBorder(), labelText: "No se puede decir ..."),
                           controller: wordController,
                           onFieldSubmitted: (value) {
                             addNewWordRule(value);
@@ -163,12 +154,13 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             TextButton(
-                                onPressed: () {
-                                  addNewWordRule(wordController.text);
-                                },
-                                child: const Text("Aceptar")),
+                              onPressed: () {
+                                addNewWordRule(wordController.text);
+                              },
+                              child: const Text("Aceptar"),
+                            ),
                           ],
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -339,7 +331,8 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
         id: "half_a_proverb",
         imagePath: "assets/images/rules/30.png",
         name: "Medio refrán",
-        description: "Dices medio refrán y el siguiente tiene que decir el resto del refrán. Si no lo sabe continua al siguiente, hasta que uno acierte. Los que no acierten beberán.",
+        description:
+            "Dices medio refrán y el siguiente tiene que decir el resto del refrán. Si no lo sabe continua al siguiente, hasta que uno acierte. Los que no acierten beberán.",
         enabled: sharedPreferences.getBool("half_a_proverb") ?? true,
       ),
     ];
@@ -355,7 +348,26 @@ class RulesNotifier extends StateNotifier<List<Rule>> {
   }
 
   List<Rule> getEnabledRules() {
-    return state.where((element) => element.enabled).toList();
+    final enabledRules = state.where((element) => element.enabled).toList();
+
+    // Agregar reglas personalizadas habilitadas
+    final customRules = ref.read(customRulesProvider);
+    final enabledCustomRules = customRules.where((rule) => rule.enabled).toList();
+
+    // Convertir reglas personalizadas a Rule y agregarlas a la lista
+    for (final customRule in enabledCustomRules) {
+      enabledRules.add(
+        Rule(
+          id: customRule.id,
+          imagePath: '', // No se usa para reglas personalizadas
+          name: customRule.name,
+          description: customRule.description,
+          enabled: customRule.enabled,
+        ),
+      );
+    }
+
+    return enabledRules;
   }
 
   Rule? getRandomRule() {

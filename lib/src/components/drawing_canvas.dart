@@ -2,6 +2,14 @@ import 'dart:convert';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
+class DrawingStroke {
+  final List<Offset> points;
+  final Color color;
+  final double strokeWidth;
+
+  DrawingStroke({required this.points, required this.color, required this.strokeWidth});
+}
+
 class DrawingCanvas extends StatefulWidget {
   final Function(String base64Image) onImageCreated;
 
@@ -12,7 +20,8 @@ class DrawingCanvas extends StatefulWidget {
 }
 
 class _DrawingCanvasState extends State<DrawingCanvas> {
-  List<Offset?> points = [];
+  List<DrawingStroke> strokes = [];
+  DrawingStroke? currentStroke;
   Color selectedColor = Colors.black;
   double strokeWidth = 3.0;
 
@@ -20,96 +29,115 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: GestureDetector(
-              onPanStart: (details) {
-                setState(() {
-                  points.add(details.localPosition);
-                });
-              },
-              onPanUpdate: (details) {
-                setState(() {
-                  points.add(details.localPosition);
-                });
-              },
-              onPanEnd: (details) {
-                setState(() {
-                  points.add(null);
-                });
-              },
-              child: CustomPaint(
-                size: const Size(300, 200),
-                painter: DrawingPainter(points: points, color: selectedColor, strokeWidth: strokeWidth),
+        Center(
+          child: Container(
+            width: 280,
+            height: 280, // Canvas cuadrado más grande
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+              color: Colors.white,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: GestureDetector(
+                onPanStart: (details) {
+                  setState(() {
+                    currentStroke = DrawingStroke(points: [details.localPosition], color: selectedColor, strokeWidth: strokeWidth);
+                  });
+                },
+                onPanUpdate: (details) {
+                  setState(() {
+                    currentStroke?.points.add(details.localPosition);
+                  });
+                },
+                onPanEnd: (details) {
+                  setState(() {
+                    if (currentStroke != null && currentStroke!.points.length > 1) {
+                      strokes.add(currentStroke!);
+                    }
+                    currentStroke = null;
+                  });
+                },
+                child: CustomPaint(
+                  size: const Size(280, 280),
+                  painter: DrawingPainter(strokes: strokes, currentStroke: currentStroke),
+                ),
               ),
             ),
           ),
         ),
         const SizedBox(height: 16),
+
+        // Controles de dibujo
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // Selector de color
-            Column(
-              children: [
-                const Text('Color', style: TextStyle(fontSize: 12)),
-                const SizedBox(height: 4),
-                GestureDetector(
-                  onTap: () => _showColorPicker(),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: selectedColor,
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(20),
+            Expanded(
+              child: Column(
+                children: [
+                  const Text('Color', style: TextStyle(fontSize: 12)),
+                  const SizedBox(height: 4),
+                  GestureDetector(
+                    onTap: () => _showColorPicker(),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: selectedColor,
+                        border: Border.all(color: Colors.grey),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
+
             // Selector de grosor
-            Column(
-              children: [
-                const Text('Grosor', style: TextStyle(fontSize: 12)),
-                const SizedBox(height: 4),
-                Slider(
-                  value: strokeWidth,
-                  min: 1.0,
-                  max: 10.0,
-                  divisions: 9,
-                  onChanged: (value) {
-                    setState(() {
-                      strokeWidth = value;
-                    });
-                  },
-                ),
-              ],
+            Expanded(
+              child: Column(
+                children: [
+                  const Text('Grosor', style: TextStyle(fontSize: 12)),
+                  const SizedBox(height: 4),
+                  Slider(
+                    value: strokeWidth,
+                    min: 1.0,
+                    max: 15.0,
+                    divisions: 14,
+                    onChanged: (value) {
+                      setState(() {
+                        strokeWidth = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
+
             // Botón limpiar
-            Column(
-              children: [
-                const Text('Limpiar', style: TextStyle(fontSize: 12)),
-                const SizedBox(height: 4),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      points.clear();
-                    });
-                  },
-                  icon: const Icon(Icons.clear),
-                ),
-              ],
+            Expanded(
+              child: Column(
+                children: [
+                  const Text('Limpiar', style: TextStyle(fontSize: 12)),
+                  const SizedBox(height: 4),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        strokes.clear();
+                        currentStroke = null;
+                      });
+                    },
+                    icon: const Icon(Icons.clear),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
+
         const SizedBox(height: 16),
-        ElevatedButton(onPressed: points.isNotEmpty ? _saveImage : null, child: const Text('Guardar Dibujo')),
+        ElevatedButton(onPressed: strokes.isNotEmpty ? _saveImage : null, child: const Text('Guardar Dibujo')),
       ],
     );
   }
@@ -137,24 +165,25 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
   void _saveImage() async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
-    final paint = Paint()
-      ..color = selectedColor
-      ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
 
     // Dibujar el fondo blanco
-    canvas.drawRect(const Rect.fromLTWH(0, 0, 300, 200), Paint()..color = Colors.white);
+    canvas.drawRect(const Rect.fromLTWH(0, 0, 280, 280), Paint()..color = Colors.white);
 
-    // Dibujar los puntos
-    for (int i = 0; i < points.length - 1; i++) {
-      if (points[i] != null && points[i + 1] != null) {
-        canvas.drawLine(points[i]!, points[i + 1]!, paint);
+    // Dibujar todas las trazas
+    for (final stroke in strokes) {
+      final paint = Paint()
+        ..color = stroke.color
+        ..strokeWidth = stroke.strokeWidth
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round;
+
+      for (int i = 0; i < stroke.points.length - 1; i++) {
+        canvas.drawLine(stroke.points[i], stroke.points[i + 1], paint);
       }
     }
 
     final picture = recorder.endRecording();
-    final image = await picture.toImage(300, 200);
+    final image = await picture.toImage(280, 280);
     final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     final bytes = byteData!.buffer.asUint8List();
 
@@ -165,23 +194,36 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
 }
 
 class DrawingPainter extends CustomPainter {
-  final List<Offset?> points;
-  final Color color;
-  final double strokeWidth;
+  final List<DrawingStroke> strokes;
+  final DrawingStroke? currentStroke;
 
-  DrawingPainter({required this.points, required this.color, required this.strokeWidth});
+  DrawingPainter({required this.strokes, this.currentStroke});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = strokeWidth
-      ..strokeCap = StrokeCap.round
-      ..strokeJoin = StrokeJoin.round;
+    // Dibujar todas las trazas completadas
+    for (final stroke in strokes) {
+      final paint = Paint()
+        ..color = stroke.color
+        ..strokeWidth = stroke.strokeWidth
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round;
 
-    for (int i = 0; i < points.length - 1; i++) {
-      if (points[i] != null && points[i + 1] != null) {
-        canvas.drawLine(points[i]!, points[i + 1]!, paint);
+      for (int i = 0; i < stroke.points.length - 1; i++) {
+        canvas.drawLine(stroke.points[i], stroke.points[i + 1], paint);
+      }
+    }
+
+    // Dibujar la traza actual
+    if (currentStroke != null) {
+      final paint = Paint()
+        ..color = currentStroke!.color
+        ..strokeWidth = currentStroke!.strokeWidth
+        ..strokeCap = StrokeCap.round
+        ..strokeJoin = StrokeJoin.round;
+
+      for (int i = 0; i < currentStroke!.points.length - 1; i++) {
+        canvas.drawLine(currentStroke!.points[i], currentStroke!.points[i + 1], paint);
       }
     }
   }
@@ -241,8 +283,9 @@ class _ColorPickerState extends State<ColorPicker> {
           ),
         ),
         const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
           children: [
             _buildColorButton(Colors.red),
             _buildColorButton(Colors.orange),
@@ -251,6 +294,7 @@ class _ColorPickerState extends State<ColorPicker> {
             _buildColorButton(Colors.blue),
             _buildColorButton(Colors.purple),
             _buildColorButton(Colors.pink),
+            _buildColorButton(Colors.brown),
             _buildColorButton(Colors.black),
             _buildColorButton(Colors.white),
           ],
@@ -280,10 +324,18 @@ class _ColorPickerState extends State<ColorPicker> {
   }
 
   void _updateColor(Offset position) {
-    // Implementación simple de selector de color
-    // En una implementación real, esto calcularía el color basado en la posición
-    final colors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.purple, Colors.pink, Colors.black, Colors.white];
-
+    final colors = [
+      Colors.red,
+      Colors.orange,
+      Colors.yellow,
+      Colors.green,
+      Colors.blue,
+      Colors.purple,
+      Colors.pink,
+      Colors.brown,
+      Colors.black,
+      Colors.white,
+    ];
     final index = ((position.dx / 200) * colors.length).floor();
     if (index >= 0 && index < colors.length) {
       setState(() {
@@ -302,10 +354,7 @@ class ColorPickerPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Crear un gradiente de colores
     final paint = Paint();
-
-    // Gradiente simple de colores
     final colors = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.purple];
 
     for (int i = 0; i < colors.length; i++) {

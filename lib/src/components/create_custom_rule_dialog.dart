@@ -31,7 +31,7 @@ class _CreateCustomRuleDialogState extends ConsumerState<CreateCustomRuleDialog>
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        constraints: const BoxConstraints(maxWidth: 500, maxHeight: 700),
+        constraints: const BoxConstraints(maxWidth: 500, maxHeight: 900),
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: SingleChildScrollView(

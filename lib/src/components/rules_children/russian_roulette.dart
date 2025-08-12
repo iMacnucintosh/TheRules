@@ -17,6 +17,7 @@ class RussianRouletteState extends ConsumerState<RussianRoulette> {
   int currentPlayer = 0;
   bool finish = false;
   late AudioPlayer _audioPlayer;
+  bool _pressed = false;
 
   void _playShot(bool bullet) async {
     String audioPath = bullet ? "/audio/shot.wav" : "/audio/shotPop.wav";
@@ -32,14 +33,17 @@ class RussianRouletteState extends ConsumerState<RussianRoulette> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: !finish
+    return RepaintBoundary(
+      child: !finish
           ? !killed
-              ? Row(
-                  children: [
-                    Expanded(
-                      child: IconButton(
-                          onPressed: () async {
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTapDown: (_) => setState(() => _pressed = true),
+                          onTapUp: (_) => setState(() => _pressed = false),
+                          onTapCancel: () => setState(() => _pressed = false),
+                          onTap: () async {
                             int shoot = Random().nextInt(2);
                             currentPlayer += 1;
                             if (shoot <= 0) {
@@ -52,12 +56,9 @@ class RussianRouletteState extends ConsumerState<RussianRoulette> {
                               if (mounted) setState(() {});
                             } else {
                               _playShot(false);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text("Jugador $currentPlayer libras"),
-                                  duration: const Duration(seconds: 1),
-                                ),
-                              );
+                              ScaffoldMessenger.of(
+                                context,
+                              ).showSnackBar(SnackBar(content: Text("Jugador $currentPlayer libras"), duration: const Duration(seconds: 1)));
                             }
 
                             if (currentPlayer >= players) {
@@ -65,37 +66,34 @@ class RussianRouletteState extends ConsumerState<RussianRoulette> {
                               setState(() {});
                             }
                           },
-                          icon: Image.asset(
-                            "assets/images/shoot.png",
-                            width: 100,
-                          )),
-                    ),
-                  ],
-                )
-              : Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.red,
+                          child: Center(
+                            child: AnimatedScale(
+                              duration: const Duration(milliseconds: 100),
+                              scale: _pressed ? 0.92 : 1.0,
+                              child: Image.asset("assets/images/shoot.png", width: 100),
+                            ),
+                          ),
                         ),
-                        height: 100,
-                        child: Center(
-                            child: Text(
-                          "¡¡¡ Jugador $currentPlayer BEBES !!!",
-                          style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
-                        )),
                       ),
-                    ),
-                  ],
-                )
-          : const Center(
-              child: Text(
-                "Ronda terminada",
-                style: TextStyle(fontSize: 20),
-              ),
-            ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16), color: Colors.red),
+                          height: 100,
+                          child: Center(
+                            child: Text(
+                              "¡¡¡ Jugador $currentPlayer BEBES !!!",
+                              style: Theme.of(context).textTheme.titleLarge!.copyWith(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+          : const Center(child: Text("Ronda terminada", style: TextStyle(fontSize: 20))),
     );
   }
 }

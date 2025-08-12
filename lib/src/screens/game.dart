@@ -1,11 +1,11 @@
 import 'dart:convert';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:therules/src/models/rule.dart';
 import 'package:therules/src/providers/current_game_provider.dart';
 import 'package:therules/src/providers/custom_rules_provider.dart';
 import 'package:therules/src/providers/rules_provider.dart';
-import 'package:therules/src/providers/theme_provider.dart';
 import 'package:therules/src/screens/settings.dart';
 
 class Game extends ConsumerStatefulWidget {
@@ -63,6 +63,18 @@ class GameState extends ConsumerState<Game> {
     }
   }
 
+  Widget _buildGlassmorphismContainer({required Widget child, double opacity = 0.15, double borderOpacity = 0.3, double blurRadius = 15}) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white.withOpacity(opacity),
+        border: Border.all(color: Colors.white.withOpacity(borderOpacity), width: 1.5),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.2), blurRadius: blurRadius, spreadRadius: 0, offset: const Offset(0, 6))],
+      ),
+      child: ClipRRect(borderRadius: BorderRadius.circular(16), child: child),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     enaughtRules = ref.read(rulesProvider.notifier).getEnabledRules().length > 1;
@@ -76,79 +88,81 @@ class GameState extends ConsumerState<Game> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return Dialog(
-                  child: Padding(
-                    padding: const EdgeInsets.all(24.0),
-                    child: StatefulBuilder(
-                      builder: (context, setState) {
-                        _gameRules = ref.read(gamesRulesProvider);
-                        _gameWords = ref.read(gamesWordsProvider);
-                        return SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Reglas activas", style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
-                                  IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: const Icon(Icons.close),
-                                  ),
-                                ],
-                              ),
-                              const Divider(),
-                              _gameRules.isNotEmpty
-                                  ? ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      itemCount: _gameRules.length,
-                                      itemBuilder: (context, index) => Card(
-                                        child: ListTile(
-                                          title: Text(_gameRules[index], style: Theme.of(context).textTheme.titleSmall),
-                                          trailing: IconButton(
-                                            tooltip: "Eliminar regla",
-                                            icon: const Icon(Icons.delete, color: Colors.red),
-                                            onPressed: () {
-                                              ref.read(gamesRulesProvider.notifier).remove(_gameRules[index]);
-                                              setState(() {});
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : ListTile(title: Text("Todavía no se ha añadido ninguna regla", style: Theme.of(context).textTheme.titleSmall)),
-                              const SizedBox(height: 20),
-                              Text("Palabras prohibidas", style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
-                              const Divider(),
-                              _gameWords.isNotEmpty
-                                  ? ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      shrinkWrap: true,
-                                      itemCount: _gameWords.length,
-                                      itemBuilder: (context, index) => Card(
-                                        child: ListTile(
-                                          title: Text(_gameWords[index], style: Theme.of(context).textTheme.titleSmall),
-                                          trailing: IconButton(
-                                            tooltip: "Eliminar palabra",
-                                            icon: const Icon(Icons.delete, color: Colors.red),
-                                            onPressed: () {
-                                              ref.read(gamesWordsProvider.notifier).remove(_gameWords[index]);
-                                              setState(() {});
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : ListTile(
-                                      title: Text("Todavía no se ha prohibido ninguna palabra", style: Theme.of(context).textTheme.titleSmall),
+                return RepaintBoundary(
+                  child: Dialog(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: StatefulBuilder(
+                        builder: (context, setState) {
+                          _gameRules = ref.read(gamesRulesProvider);
+                          _gameWords = ref.read(gamesWordsProvider);
+                          return SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text("Reglas activas", style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: const Icon(Icons.close),
                                     ),
-                            ],
-                          ),
-                        );
-                      },
+                                  ],
+                                ),
+                                const Divider(),
+                                _gameRules.isNotEmpty
+                                    ? ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        shrinkWrap: true,
+                                        itemCount: _gameRules.length,
+                                        itemBuilder: (context, index) => Card(
+                                          child: ListTile(
+                                            title: Text(_gameRules[index], style: Theme.of(context).textTheme.titleSmall),
+                                            trailing: IconButton(
+                                              tooltip: "Eliminar regla",
+                                              icon: const Icon(Icons.delete, color: Colors.red),
+                                              onPressed: () {
+                                                ref.read(gamesRulesProvider.notifier).remove(_gameRules[index]);
+                                                setState(() {});
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : ListTile(title: Text("Todavía no se ha añadido ninguna regla", style: Theme.of(context).textTheme.titleSmall)),
+                                const SizedBox(height: 20),
+                                Text("Palabras prohibidas", style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.bold)),
+                                const Divider(),
+                                _gameWords.isNotEmpty
+                                    ? ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        shrinkWrap: true,
+                                        itemCount: _gameWords.length,
+                                        itemBuilder: (context, index) => Card(
+                                          child: ListTile(
+                                            title: Text(_gameWords[index], style: Theme.of(context).textTheme.titleSmall),
+                                            trailing: IconButton(
+                                              tooltip: "Eliminar palabra",
+                                              icon: const Icon(Icons.delete, color: Colors.red),
+                                              onPressed: () {
+                                                ref.read(gamesWordsProvider.notifier).remove(_gameWords[index]);
+                                                setState(() {});
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : ListTile(
+                                        title: Text("Todavía no se ha prohibido ninguna palabra", style: Theme.of(context).textTheme.titleSmall),
+                                      ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 );
@@ -186,108 +200,158 @@ class GameState extends ConsumerState<Game> {
         ],
       ),
       body: enaughtRules && currentRule != null
-          ? LayoutBuilder(
-              builder: (context, constraints) {
-                double width = constraints.maxWidth;
-                double height = constraints.maxHeight;
-                double size = width < height ? width : height;
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Título de la regla
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: FilledButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(24.0),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: <Widget>[
-                                        _buildRuleImage(),
-                                        const SizedBox(height: 20),
-                                        Text(currentRule!.name, style: Theme.of(context).textTheme.headlineSmall),
-                                        const SizedBox(height: 20),
-                                        Text(currentRule!.description, textAlign: TextAlign.justify),
+          ? Stack(
+              children: [
+                // Fondo con blur
+                Positioned.fill(
+                  child: RepaintBoundary(
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                      child: Image.asset("assets/images/TheRulesWallpaper.png", fit: BoxFit.cover, filterQuality: FilterQuality.low),
+                    ),
+                  ),
+                ),
+                // Contenido principal
+                RepaintBoundary(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      double width = constraints.maxWidth;
+                      double height = constraints.maxHeight;
+                      double size = width < height ? width : height;
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Título de la regla
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: _buildGlassmorphismContainer(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+                                  splashFactory: NoSplash.splashFactory,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(16),
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(24.0),
+                                            child: SingleChildScrollView(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: <Widget>[
+                                                  _buildRuleImage(),
+                                                  const SizedBox(height: 20),
+                                                  Text(currentRule!.name, style: Theme.of(context).textTheme.headlineSmall),
+                                                  const SizedBox(height: 20),
+                                                  Text(currentRule!.description, textAlign: TextAlign.justify),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(currentRule!.name, style: const TextStyle(fontSize: 25, color: Colors.white)),
+                                        const SizedBox(width: 15),
+                                        const Icon(Icons.info_outline, color: Colors.white),
                                       ],
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(currentRule!.name, style: const TextStyle(fontSize: 25)),
-                              const SizedBox(width: 15),
-                              const Icon(Icons.info_outline),
-                            ],
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
 
-                    const SizedBox(height: 40),
+                          const SizedBox(height: 40),
 
-                    // Imagen central
-                    ConstrainedBox(
-                      constraints: BoxConstraints(minWidth: size - 60, minHeight: size - 60, maxWidth: size - 60, maxHeight: size - 60),
-                      child: FilledButton(
-                        onPressed: () {
-                          nextRule();
-                        },
-                        child: Padding(padding: const EdgeInsets.all(10.0), child: _buildRuleImage()),
-                      ),
-                    ),
-
-                    const SizedBox(height: 40),
-
-                    // Botón de tirar
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: currentRule!.child != null
-                          ? Container(
-                              height: 120,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: ref.watch(accentColorProvider), width: 1.5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: Row(children: [Expanded(child: currentRule!.child!)]),
-                                ),
-                              ),
-                            )
-                          : FilledButton(
-                              onPressed: () {
-                                nextRule();
-                              },
-                              child: const SizedBox(
-                                height: 120,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Icon(Icons.casino_outlined, size: 40),
-                                    Text("TIRAR", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-                                    Icon(Icons.casino_outlined, size: 40),
-                                  ],
+                          // Imagen central
+                          ConstrainedBox(
+                            constraints: BoxConstraints(minWidth: size - 60, minHeight: size - 60, maxWidth: size - 60, maxHeight: size - 60),
+                            child: _buildGlassmorphismContainer(
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+                                  splashFactory: NoSplash.splashFactory,
+                                  hoverColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  splashColor: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(16),
+                                  onTap: () {
+                                    nextRule();
+                                  },
+                                  child: Padding(padding: const EdgeInsets.all(10.0), child: _buildRuleImage()),
                                 ),
                               ),
                             ),
-                    ),
-                  ],
-                );
-              },
+                          ),
+
+                          const SizedBox(height: 40),
+
+                          // Botón de tirar
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: currentRule!.child != null
+                                ? _buildGlassmorphismContainer(
+                                    child: Container(
+                                      height: 120,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Center(
+                                          child: Row(children: [Expanded(child: currentRule!.child!)]),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : _buildGlassmorphismContainer(
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+                                        splashFactory: NoSplash.splashFactory,
+                                        hoverColor: Colors.transparent,
+                                        highlightColor: Colors.transparent,
+                                        splashColor: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(16),
+                                        onTap: () {
+                                          nextRule();
+                                        },
+                                        child: const SizedBox(
+                                          height: 120,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Icon(Icons.casino_outlined, size: 40, color: Colors.white),
+                                              Text(
+                                                "TIRAR",
+                                                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white),
+                                              ),
+                                              Icon(Icons.casino_outlined, size: 40, color: Colors.white),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+              ],
             )
           : Center(
               child: Padding(
